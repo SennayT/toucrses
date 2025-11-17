@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../app/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgcrypto]
+}
+
+model Course {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String         @unique
+  description String         @db.Text
+  fee         Float
+  topics      String         @db.Text
+  courseInfo  String         @db.Text
+  jobRoles    String         @db.Text
+  courseCode  String         @unique
+  trainers    String         @db.Text
+  session     Int
+  duration    Int
+  venue       String
+  level       String
+  notes       Json
+  categoryId  String         @db.Uuid
+  category    CourseCategory @relation(fields: [categoryId], references: [id])
+}
+
+model CourseCategory {
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String @unique
+  description String
+
+  parentId     String?          @db.Uuid
+  parent       CourseCategory?  @relation("TeacherStudents", fields: [parentId], references: [id])
+  children     CourseCategory[] @relation("TeacherStudents")
+  courses      Course[]
+  categoryTags CategoryTags[]
+}
+
+model Tags {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String         @unique
+  categoryTags CategoryTags[]
+}
+
+model CategoryTags {
+  tagId      String @db.Uuid
+  categoryId String @db.Uuid
+
+  tag            Tags           @relation(fields: [tagId], references: [id])
+  courseCategory CourseCategory @relation(fields: [categoryId], references: [id])
+
+  @@id([tagId, categoryId])
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+}
