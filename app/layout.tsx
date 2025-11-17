@@ -36,11 +36,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <div className="bg-white font-sans antialiased">
+          {children}
+          {/* <div className="bg-white font-sans antialiased">
             <Header />
             <main>{children}</main>
             <Footer />
-          </div>
+          </div> */}
         </AppRouterCacheProvider>
       </body>
     </html>

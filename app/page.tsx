@@ -10,11 +10,15 @@ import { PartnersSection } from "./_components/PartnerSection";
 
 export default function App() {
   return (
-    <div>
-      <HeroSection />
-      <ExploreCategoriesSection />
-      <CourseList />
-      <PartnersSection />
+    <div className="bg-white font-sans antialiased">
+      <Header />
+      <main>
+        <HeroSection />
+        <ExploreCategoriesSection />
+        <CourseList />
+        <PartnersSection />
+      </main>
+      <Footer />
     </div>
   );
 }

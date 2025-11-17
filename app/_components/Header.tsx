@@ -1,4 +1,7 @@
 "use client";
+import { authClient } from "@/lib/auth-client";
+import Button from "@mui/material/Button";
+import Link from "next/link";
 import { useState } from "react";
 const icons = {
   Menu: (
@@ -270,6 +273,7 @@ const icons = {
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = authClient.useSession();
 
   const navLinks = [
     { name: "Adult Courses", href: "#" },
@@ -288,17 +292,6 @@ export function Header() {
             <div className="flex gap-4">
               <span>Call +60 7931 9658</span>
               <span>Email: sales@tertiarycourses.com.my</span>
-            </div>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-blue-600">
-                My Account
-              </a>
-              <a href="#" className="hover:text-blue-600">
-                Sign Up
-              </a>
-              <a href="#" className="hover:text-blue-600">
-                Cart
-              </a>
             </div>
           </div>
         </div>
@@ -332,26 +325,35 @@ export function Header() {
           </div>
 
           {/* Search and Auth (Desktop) */}
-          <div className="hidden lg:flex items-center gap-4">
-            <button
-              aria-label="Search"
-              className="text-gray-600 hover:text-blue-600"
-            >
-              {icons.Search}
-            </button>
-            <a
-              href="#"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600"
-            >
-              Log In
-            </a>
-            <a
-              href="#"
-              className="ml-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
-            >
-              Sign Up
-            </a>
-          </div>
+          {!session && (
+            <div className="hidden lg:flex items-center gap-4">
+              <button
+                aria-label="Search"
+                className="text-gray-600 hover:text-blue-600"
+              >
+                {icons.Search}
+              </button>
+              <Link
+                href="/auth/login"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600"
+              >
+                Log In
+              </Link>
+              <a
+                href="#"
+                className="ml-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
+              >
+                Sign Up
+              </a>
+            </div>
+          )}
+          {session && (
+            <div className="hidden lg:flex items-center gap-4">
+              <h3>Hi {session?.user?.name}</h3>
+              <Link href="/dashboard">Dashboard</Link>
+              <Button onClick={() => authClient.signOut()}>Logout</Button>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
@@ -385,20 +387,22 @@ export function Header() {
             >
               Contact Us
             </a>
-            <div className="border-t border-gray-200 pt-4 flex flex-col gap-y-4">
-              <a
-                href="#"
-                className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50 hover:text-blue-600"
-              >
-                Log In
-              </a>
-              <a
-                href="#"
-                className="block w-full px-4 py-2 text-base font-medium text-center text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
-              >
-                Sign Up
-              </a>
-            </div>
+            {!session && (
+              <div className="border-t border-gray-200 pt-4 flex flex-col gap-y-4">
+                <a
+                  href="#"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-50 hover:text-blue-600"
+                >
+                  Log In
+                </a>
+                <a
+                  href="#"
+                  className="block w-full px-4 py-2 text-base font-medium text-center text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
+                >
+                  Sign Up
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}
