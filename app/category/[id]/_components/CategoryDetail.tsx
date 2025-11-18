@@ -80,7 +80,7 @@ const initialCourses = [
 ];
 
 // Helper function to render star ratings
-const StarRating = ({ rating }) => {
+const StarRating = ({ rating }: { rating: number }) => {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
@@ -115,7 +115,8 @@ const StarRating = ({ rating }) => {
 };
 
 // Course Card Component
-const CourseCard = ({ course }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CourseCard = ({ course }: { course: any }) => {
   const { name, price, currency, platform, reviews, duration } = course;
   const cardIconMap = {
     "Social Commerce": Users,
@@ -125,7 +126,6 @@ const CourseCard = ({ course }) => {
     Email: List,
     Advertising: Globe,
   };
-  const IconComponent = cardIconMap[platform] || LayoutGrid;
 
   return (
     <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 border border-gray-100">
@@ -168,7 +168,15 @@ const CourseCard = ({ course }) => {
 };
 
 // Filter and Sort Bar Component
-const FilterBar = ({ itemCount, sortOption, setSortOption }) => {
+const FilterBar = ({
+  itemCount,
+  sortOption,
+  setSortOption,
+}: {
+  itemCount: number;
+  sortOption: string;
+  setSortOption: (option: string) => void;
+}) => {
   const sortOptions = [
     { value: "position", label: "Position" },
     { value: "price_asc", label: "Price: Low to High" },

@@ -22,8 +22,8 @@ const participantOptions = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 // --- Custom Components for Reusability and Styling ---
-
-const InputGroup = ({ label, children, isRequired, error }) => (
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const InputGroup = ({ label, children, isRequired, error }: any) => (
   <div className="flex flex-col space-y-2">
     <label className="text-sm font-semibold text-gray-700">
       {label}
@@ -31,39 +31,6 @@ const InputGroup = ({ label, children, isRequired, error }) => (
     </label>
     {children}
     {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
-  </div>
-);
-
-const RadioOption = ({ label, value, currentSelection, onSelect }) => (
-  <div
-    className={`flex items-center p-3 cursor-pointer rounded-lg transition-all duration-200 ease-in-out ${
-      currentSelection === value
-        ? "bg-blue-50 border-blue-500 border-2"
-        : "bg-white border border-gray-200 hover:border-blue-300"
-    }`}
-    onClick={() => onSelect(value)}
-  >
-    <input
-      type="radio"
-      value={value}
-      checked={currentSelection === value}
-      onChange={() => onSelect(value)}
-      className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
-      // Hide the default radio button visually, since the parent div is handling the click and visual state
-      style={{ display: "none" }}
-    />
-    <div
-      className={`h-4 w-4 rounded-full border-2 mr-3 flex items-center justify-center transition-colors ${
-        currentSelection === value
-          ? "border-blue-600 bg-white"
-          : "border-gray-400 bg-white"
-      }`}
-    >
-      {currentSelection === value && (
-        <div className="h-2 w-2 rounded-full bg-blue-600"></div>
-      )}
-    </div>
-    <span className="text-sm font-medium text-gray-800">{label}</span>
   </div>
 );
 
@@ -92,7 +59,8 @@ export const RegistrationForm = () => {
   const modeOfTraining = watch("modeOfTraining");
   const sponsorship = watch("sponsorship");
 
-  const onSubmit = (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (data: any) => {
     // Simulate API call
     console.log("Form Submitted:", data);
     alert("Form submitted successfully! Check console for data.");
@@ -234,7 +202,7 @@ export const RegistrationForm = () => {
               render={({ field }) => (
                 <textarea
                   {...field}
-                  rows="3"
+                  rows={3}
                   placeholder="Enter full name(s) as they should appear on the certificate, separated by commas if multiple."
                   className={`block w-full px-4 py-3 border rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ${
                     errors.nameOnCertificate
@@ -257,7 +225,7 @@ export const RegistrationForm = () => {
               render={({ field }) => (
                 <textarea
                   {...field}
-                  rows="3"
+                  rows={3}
                   placeholder="e.g., specific dietary needs, questions, or alternative email addresses."
                   className="block w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 transition duration-150"
                 />

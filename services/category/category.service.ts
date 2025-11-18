@@ -10,6 +10,7 @@ export const getParentsForCategory = async (categoryId: string) => {
   const categories: (typeof category)[] = [category];
   //get 5 categories
   let current = category;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const _ of Array.from({ length: 5 })) {
     if (current.parentId === null) break;
     const parent = await prisma.courseCategory.findUnique({

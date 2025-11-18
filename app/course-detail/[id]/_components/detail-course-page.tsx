@@ -134,24 +134,6 @@ const icons = {
 // Helper Component for Star Rating Display
 
 // Custom styled Radio button
-const StyledRadio = ({ label, name, value, checked, onChange }) => (
-  <label className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-gray-50 transition duration-150">
-    <button
-      type="button"
-      role="radio"
-      aria-checked={checked}
-      onClick={() => onChange(name, value)}
-      className={`w-5 h-5 flex items-center justify-center rounded-full border-2 transition-all ${
-        checked ? "border-blue-600 bg-blue-100" : "border-gray-400 bg-white"
-      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1`}
-    >
-      {checked && (
-        <span className="w-2.5 h-2.5 bg-blue-600 rounded-full"></span>
-      )}
-    </button>
-    <span className="text-sm text-gray-700">{label}</span>
-  </label>
-);
 
 interface Props {
   courseData: Prisma.CourseGetPayload<{ include: null }>;
@@ -173,7 +155,7 @@ export const CourseDetailPage = ({ courseData }: Props) => {
                   rating={courseData.rating}
                   reviewCount={courseData.reviewCount}
                 /> */}
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               {[].map((feature, index) => (
                 <div
                   key={index}
@@ -185,7 +167,7 @@ export const CourseDetailPage = ({ courseData }: Props) => {
                   <span>{feature.text}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Main Image */}
@@ -238,9 +220,9 @@ export const CourseDetailPage = ({ courseData }: Props) => {
               <h3 className="text-lg font-semibold text-blue-800">
                 Professional Certificate
               </h3>
-              <p className="text-sm text-blue-700 mt-1">
-                {courseData.certificateInfo}
-              </p>
+              {/* <p className="text-sm text-blue-700 mt-1">
+                {courseData.c}
+              </p> */}
             </div>
           </div>
 
@@ -251,7 +233,7 @@ export const CourseDetailPage = ({ courseData }: Props) => {
 
       {/* Column 2: Registration Form Card */}
       <div>
-        <RegistrationForm courseData={courseData} />
+        <RegistrationForm />
       </div>
     </div>
   );

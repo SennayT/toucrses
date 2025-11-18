@@ -1,3 +1,4 @@
-export default function CoursePage() {
+export default async function CoursePage() {
+  //  const courses = await
   return <p>hi</p>;
 }
