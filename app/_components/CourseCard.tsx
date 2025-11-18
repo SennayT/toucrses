@@ -44,12 +44,12 @@ export function CourseCard({
             <span className="text-2xl font-bold text-gray-900">
               {course.fee}
             </span>
-            <a
-              href="#"
+            <Link
+              href={`course-detail/${course.id}`}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
             >
               See Details
-            </a>
+            </Link>
           </div>
         </div>
       </div>

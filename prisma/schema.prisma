@@ -46,6 +46,7 @@ model CourseCategory {
   children     CourseCategory[] @relation("TeacherStudents")
   courses      Course[]
   categoryTags CategoryTags[]
+  isHeader     Boolean          @default(false)
 }
 
 model Tags {
