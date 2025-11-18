@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 
 export function SanitizedText({ text }: { text: string }) {
   // Sanitize the HTML string first
