@@ -25,13 +25,7 @@ import { authClient } from "@/lib/auth-client";
 // Define validation schema
 const userSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    ),
+  password: z.string(),
   name: z.string().min(2, "Name must be at least 2 characters"),
   role: z.enum(["user", "admin"]),
 });

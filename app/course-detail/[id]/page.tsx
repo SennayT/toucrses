@@ -45,7 +45,7 @@ export default async function Page({ params }: props) {
           categoryId={course.categoryId}
           courseName={course.name}
         />
-        <CourseDetailPage courseData={course} />;
+        <CourseDetailPage courseData={course} />
       </div>
     </div>
   );
