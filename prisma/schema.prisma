@@ -10,6 +10,7 @@ generator client {
   previewFeatures = ["postgresqlExtensions"]
   binaryTargets   = ["native", "rhel-openssl-3.0.x"]
   engineType      = "client"
+  runtime         = "nodejs"
 }
 
 datasource db {
