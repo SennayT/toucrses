@@ -18,6 +18,7 @@ import {
   $getRoot,
   $insertNodes,
   $isTextNode,
+  CLEAR_EDITOR_COMMAND,
   DOMConversionMap,
   DOMExportOutput,
   DOMExportOutputMap,
@@ -170,12 +171,29 @@ function EditorContent({ initialValue, onChange }: props) {
     if (isFirstRender) setIsFirstRender(false);
     if (!isFirstRender) return;
     editor.update(() => {
+      editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
       // In the browser you can use the native DOMParser API to parse the HTML string.
       const parser = new DOMParser();
       const dom = parser.parseFromString(initialValue, "text/html");
 
       // Once you have the DOM instance it's easy to generate LexicalNodes.
       const nodes = $generateNodesFromDOM(editor, dom);
+      const filterEmptyNodes = (nodes: LexicalNode[]) => {
+        for (const node of nodes) {
+          if (node instanceof ParagraphNode) {
+            const content = node.getTextContent().trim();
+
+            if (content) {
+              break;
+            }
+
+            node.remove();
+          }
+        }
+      };
+
+      filterEmptyNodes(nodes);
+      filterEmptyNodes(nodes.reverse());
 
       // Select the root
       $getRoot().select();

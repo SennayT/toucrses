@@ -2,8 +2,10 @@
 
 import { Prisma } from "@/app/generated/prisma/client";
 import { Editor } from "@/components/editor/editor";
-import { Grid, TextField, Typography } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 
 interface Props {
   course: Prisma.CourseGetPayload<{ include: null }> | null;
@@ -11,7 +13,7 @@ interface Props {
 export function CourseEditor({ course }: Props) {
   const [description, setDescripton] = useState(course?.description ?? "");
   const [topics, setTopics] = useState(course?.topics ?? "");
-  const [courseIngo, setCourseInfo] = useState(course?.courseInfo ?? "");
+  const [courseInfo, setCourseInfo] = useState(course?.courseInfo ?? "");
   const [jobRoles, setJobRoles] = useState(course?.jobRoles ?? "");
   const [trainers, setTrainers] = useState(course?.trainers ?? "");
 
@@ -23,6 +25,35 @@ export function CourseEditor({ course }: Props) {
   const [venue, setVenue] = useState(course?.venue ?? "");
   const [level, setLevel] = useState(course?.level ?? "");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = async () => {
+    if (!course?.id) return;
+    setIsSubmitting(true);
+    try {
+      await axios.patch(`/api/courses/${course.id}`, {
+        name: courseName,
+        description,
+        topics,
+        courseInfo,
+        jobRoles,
+        trainers,
+        courseCode,
+        fee: typeof fee === "number" ? fee : Number(fee),
+        session: Number(session) || 0,
+        duration: Number(duration) || 0,
+        venue,
+        level,
+      });
+      enqueueSnackbar("Course updated successfully", { variant: "success" });
+    } catch (err) {
+      console.error("Failed to update course", err);
+      enqueueSnackbar("Could Not Update Course", { variant: "error" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
@@ -33,6 +64,7 @@ export function CourseEditor({ course }: Props) {
           fullWidth
         />
       </Grid>
+
       <Grid size={4}>
         <Typography>Course Fee</Typography>
         <TextField
@@ -90,6 +122,15 @@ export function CourseEditor({ course }: Props) {
           }}
         />
       </Grid>
+      <Grid size={12}>
+        <Typography>Trainers</Typography>
+        <Editor
+          initialValue={course?.trainers ?? ""}
+          onChange={(val) => {
+            setTrainers(val);
+          }}
+        />
+      </Grid>
 
       <Grid size={12}>
         <Typography>Topics</Typography>
@@ -117,6 +158,16 @@ export function CourseEditor({ course }: Props) {
             setJobRoles(val);
           }}
         />
+      </Grid>
+      <Grid size={12}>
+        <Button
+          loading={isSubmitting}
+          variant="contained"
+          onClick={submit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Saving..." : "Save Changes"}
+        </Button>
       </Grid>
     </Grid>
   );
