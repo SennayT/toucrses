@@ -116,9 +116,11 @@ function buildUpdateData(payload: CourseUpdatePayload) {
   return data;
 }
 
-export async function PATCH(request: Request, { params }: RouteContext) {
-  console.log("params", { params });
-  const courseId = (await params)?.id;
+export async function PATCH(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const courseId = (await context.params)?.id;
 
   if (!courseId) {
     return NextResponse.json(

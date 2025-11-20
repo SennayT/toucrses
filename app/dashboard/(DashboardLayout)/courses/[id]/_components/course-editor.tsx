@@ -3,13 +3,18 @@
 import { Prisma } from "@/app/generated/prisma/client";
 import { Editor } from "@/components/editor/editor";
 import axios from "axios";
-import { useState } from "react";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 
 interface Props {
   course: Prisma.CourseGetPayload<{ include: null }> | null;
 }
+
+type CategoryOption = {
+  id: string;
+  name: string;
+};
 export function CourseEditor({ course }: Props) {
   const [description, setDescripton] = useState(course?.description ?? "");
   const [topics, setTopics] = useState(course?.topics ?? "");
@@ -24,10 +29,40 @@ export function CourseEditor({ course }: Props) {
   const [duration, setDuration] = useState(course?.duration ?? "");
   const [venue, setVenue] = useState(course?.venue ?? "");
   const [level, setLevel] = useState(course?.level ?? "");
+  const [categoryId, setCategoryId] = useState(course?.categoryId ?? "");
+
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = async () => {
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setCategoriesLoading(true);
+      try {
+        const response = await axios.get("/api/categories");
+        const fetched = (response?.data?.data ?? []) as CategoryOption[];
+        setCategories(fetched);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+        enqueueSnackbar("Could not load categories", { variant: "error" });
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const ensureCategory = () => {
+    if (categoryId) {
+      return true;
+    }
+    enqueueSnackbar("Please select a category", { variant: "warning" });
+    return false;
+  };
+
+  const update = async () => {
     if (!course?.id) return;
     setIsSubmitting(true);
     try {
@@ -44,6 +79,7 @@ export function CourseEditor({ course }: Props) {
         duration: Number(duration) || 0,
         venue,
         level,
+        categoryId,
       });
       enqueueSnackbar("Course updated successfully", { variant: "success" });
     } catch (err) {
@@ -53,7 +89,43 @@ export function CourseEditor({ course }: Props) {
       setIsSubmitting(false);
     }
   };
+  const createNew = async () => {
+    setIsSubmitting(true);
+    try {
+      await axios.post(`/api/courses`, {
+        name: courseName,
+        description,
+        topics,
+        courseInfo,
+        jobRoles,
+        trainers,
+        courseCode,
+        fee: typeof fee === "number" ? fee : Number(fee),
+        session: Number(session) || 0,
+        duration: Number(duration) || 0,
+        venue,
+        level,
+        categoryId,
+      });
+      enqueueSnackbar("Course created successfully", { variant: "success" });
+    } catch (err) {
+      console.error("Failed to create course", err);
+      enqueueSnackbar("Could Not Create Course", { variant: "error" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const submit = async () => {
+    if (!ensureCategory()) {
+      return;
+    }
 
+    if (course) {
+      await update();
+    } else {
+      await createNew();
+    }
+  };
   return (
     <Grid container spacing={2}>
       <Grid size={12}>
@@ -113,6 +185,23 @@ export function CourseEditor({ course }: Props) {
           fullWidth
         />
       </Grid>
+      <Grid size={4}>
+        <Typography>Category</Typography>
+        <TextField
+          select
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          fullWidth
+          disabled={categoriesLoading || categories.length === 0}
+          helperText={categoriesLoading ? "Loading categories..." : undefined}
+        >
+          {categories.map((cat) => (
+            <MenuItem key={cat.id} value={cat.id}>
+              {cat.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
       <Grid size={12}>
         <Typography>Description</Typography>
         <Editor
@@ -122,6 +211,7 @@ export function CourseEditor({ course }: Props) {
           }}
         />
       </Grid>
+
       <Grid size={12}>
         <Typography>Trainers</Typography>
         <Editor

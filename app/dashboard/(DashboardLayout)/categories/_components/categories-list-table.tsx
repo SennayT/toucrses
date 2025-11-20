@@ -22,7 +22,7 @@ import { Prisma } from "@/app/generated/prisma/client";
 import { useEffect, useState } from "react";
 
 const columns: MRT_ColumnDef<
-  Prisma.CourseGetPayload<{ include: { category: true } }>
+  Prisma.CourseCategoryGetPayload<{ include: { parent: true } }>
 >[] = [
   {
     header: "Name",
@@ -30,22 +30,18 @@ const columns: MRT_ColumnDef<
   },
 
   {
-    header: "Fee",
-    accessorKey: "fee",
-  },
-  {
-    header: "Category",
-    accessorKey: "category.name",
+    header: "Parent",
+    accessorKey: "parent.name",
   },
 ];
 
 interface Props {
-  courses: Prisma.CourseGetPayload<{ include: { category: true } }>[];
+  categories: Prisma.CourseCategoryGetPayload<{ include: { parent: true } }>[];
   limit: number;
   offset: number;
   total: number;
 }
-export function CoursesTable({ courses, limit, offset, total }: Props) {
+export function CategoriesTable({ categories, limit, offset, total }: Props) {
   const router = useRouter();
   const [pagination, setPagination] = useState({
     pageIndex: offset,
@@ -54,27 +50,27 @@ export function CoursesTable({ courses, limit, offset, total }: Props) {
 
   useEffect(() => {
     router.push(
-      `/dashboard/courses?limit=${pagination.pageSize}&offset=${pagination.pageIndex}`
+      `/dashboard/categories?limit=${pagination.pageSize}&offset=${pagination.pageIndex}`
     );
   }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useMaterialReactTable({
     columns,
-    data: courses ?? [],
+    data: categories ?? [],
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: { pagination },
     manualPagination: true,
     rowCount: total,
     renderTopToolbarCustomActions: () => (
-      <Typography variant="h4">Courses Table</Typography>
+      <Typography variant="h4">Categories Table</Typography>
     ),
     renderToolbarInternalActions: ({ table }) => (
       <>
         {/* add your own custom print button or something */}
 
         {/* built-in buttons (must pass in table prop for them to work!) */}
-        <Link href="/dashboard/courses/new">
-          <Button>Add New Course</Button>
+        <Link href="/dashboard/categories/new">
+          <Button>Add New Category</Button>
         </Link>
         <MRT_ToggleFullScreenButton table={table} />
         <MRT_GlobalFilterTextField table={table} />
@@ -86,7 +82,7 @@ export function CoursesTable({ courses, limit, offset, total }: Props) {
     enableRowActions: true,
     renderRowActions: ({ row }) => (
       <Box>
-        <Link href={`/dashboard/courses/${row?.original?.id}`}>
+        <Link href={`/dashboard/categories/${row?.original?.id}`}>
           <IconButton onClick={() => console.info("Edit")}>
             <EditIcon />
           </IconButton>
