@@ -119,7 +119,7 @@ function AIIcon() {
 
 // --- Components ---
 
-const StarRating = ({ rating, count }) => {
+const StarRating = ({ rating, count }: { rating: number, count: number }) => {
   // Create array of 5 items to map
   const stars = [1, 2, 3, 4, 5];
 
@@ -144,7 +144,7 @@ const StarRating = ({ rating, count }) => {
   );
 };
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course }: { course: any }) => {
   return (
     <div className="flex flex-col items-center p-2 w-full max-w-[300px] mx-auto group transition-transform duration-300 hover:-translate-y-1">
       {/* Thumbnail Area - Mimicking the specific graphics from the screenshot */}

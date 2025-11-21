@@ -79,8 +79,8 @@ export default function App() {
       <Header />
       <NavBar />
       <HeroSection />
-      <CourseSection title="Popular HRD Corp Funded Courses" courses={POPULAR_COURSES} />
-      <CourseSection title="HRD Corp Funded Microsoft Certification Courses" courses={MICROSOFT_COURSES} type="microsoft" />
+      <CourseSection />
+      <CourseSection />
       <Footer />
     </div>
   );
