@@ -52,12 +52,19 @@ const jobRoles = [
 
 // --- Components ---
 
-const TabButton = ({ active, label, onClick, icon: Icon }) => (
+interface TabButtonProps {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+  icon?: React.ComponentType<{ size?: number }>;
+}
+
+const TabButton: React.FC<TabButtonProps> = ({ active, label, onClick, icon: Icon }) => (
   <button
     onClick={onClick}
     className={`flex items-center gap-2 px-6 py-3 font-medium text-sm transition-colors border-t-2 ${active
-        ? 'border-blue-500 bg-white text-gray-800'
-        : 'border-transparent bg-gray-100 text-gray-500 hover:bg-gray-200'
+      ? 'border-blue-500 bg-white text-gray-800'
+      : 'border-transparent bg-gray-100 text-gray-500 hover:bg-gray-200'
       }`}
   >
     {Icon && <Icon size={16} />}
@@ -65,13 +72,23 @@ const TabButton = ({ active, label, onClick, icon: Icon }) => (
   </button>
 );
 
-const SectionTitle = ({ children }) => (
+interface SectionTitleProps {
+  children: React.ReactNode;
+}
+
+const SectionTitle: React.FC<SectionTitleProps> = ({ children }) => (
   <h3 className="text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-4 mt-6">
     {children}
   </h3>
 );
 
-const SidebarItem = ({ label, children, required }) => (
+interface SidebarItemProps {
+  label: string;
+  children: React.ReactNode;
+  required?: boolean;
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({ label, children, required }) => (
   <div className="mb-4">
     <label className="block text-sm font-bold text-gray-700 mb-1">
       {label} {required && <span className="text-red-500">*</span>}
@@ -364,8 +381,8 @@ export default function App() {
                       key={num}
                       onClick={() => setParticipants(num)}
                       className={`w-8 h-8 flex items-center justify-center text-sm border rounded ${participants === num
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
                         }`}
                     >
                       {num}
