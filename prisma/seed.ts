@@ -2,564 +2,1195 @@ import { PrismaClient } from "../app/generated/prisma/client";
 
 const prisma = new PrismaClient();
 
+type CategorySeed = {
+  name: string;
+  isHeader?: boolean;
+  children?: CategorySeed[];
+};
+
+const categories: CategorySeed[] = [
+  {
+    name: "Infocomm Technology",
+    children: [
+      {
+        name: "Artificial Intelligence",
+        isHeader: true,
+        children: [
+          {
+            name: "Gen AI & Agentic AI",
+            children: [
+              { name: "Generative AI", isHeader: true },
+              { name: "Agentic AI", isHeader: true },
+              { name: "AI Chatbots" },
+              { name: "AI Digital Humans" },
+              { name: "Large Language Models (LLM)" },
+            ],
+          },
+          {
+            name: "Machine Learning",
+            children: [
+              { name: "Computer Vision" },
+              { name: "Natural Language Processing (NLP)" },
+              { name: "Generative Adversarial Network (GAN)" },
+              { name: "Reinforcement Learning (RL)" },
+            ],
+          },
+          {
+            name: "AI Frameworks",
+            children: [
+              { name: "Pytorch" },
+              { name: "Keras, Tensorflow & JAX" },
+              { name: "Scikit Learn" },
+              { name: "Azure ML & Bedrock" },
+              { name: "R ML" },
+            ],
+          },
+          {
+            name: "AI Ethics & Governance",
+          },
+        ],
+      },
+      { name: "Data Management" },
+      { name: "Programming" },
+      { name: "Quantum Computing" },
+      { name: "Cloud Computing" },
+      { name: "Cyber Security" },
+      { name: "Content Management" },
+      { name: "e-Commerce" },
+      { name: "Web Development" },
+      { name: "Full Stack Development" },
+      { name: "Mobile Apps" },
+      { name: "DevOps" },
+      { name: "RPA, API & Automation" },
+      { name: "Networking" },
+      { name: "Databases" },
+      { name: "Operating Systems" },
+    ],
+  },
+  {
+    name: "Media & Design",
+    children: [
+      { name: "Graphics Design", isHeader: true },
+      { name: "Technical Drawing", isHeader: true },
+      { name: "3D Printing" },
+      { name: "Video Editing" },
+      { name: "Photography" },
+      { name: "UX/UI Design" },
+      { name: "Gaming & Animation" },
+      { name: "Immersive Technologies" },
+      { name: "Instructional Design" },
+      { name: "Infographics" },
+      { name: "eLearning" },
+    ],
+  },
+  {
+    name: "Robotics & IoT",
+    children: [
+      { name: "Internet of Things (IoT)" },
+      { name: "ROS" },
+      { name: "Raspberry Pi" },
+      { name: "Arduino" },
+    ],
+  },
+  {
+    name: "Digital Marketing",
+    children: [
+      { name: "PPC Marketing" },
+      { name: "SEO" },
+      { name: "Social Media Marketing" },
+      { name: "Email Marketing" },
+      { name: "Video Marketing" },
+      { name: "Content Marketing" },
+      { name: "Marketing Analytics" },
+    ],
+  },
+  {
+    name: "Business & Soft Skills",
+    children: [
+      { name: "Project Management", isHeader: true },
+      { name: "Soft Skills" },
+      { name: "HR Management" },
+      { name: "Corporate Governance" },
+      { name: "Design Thinking" },
+    ],
+  },
+  {
+    name: "Financial Services",
+    children: [
+      { name: "Accounting", isHeader: true },
+      { name: "Finance", isHeader: true },
+      { name: "Blockchain" },
+      { name: "Algorithmic Trading" },
+      { name: "Investment" },
+    ],
+  },
+  {
+    name: "Logistics & Supply Chain",
+    children: [{ name: "Supply Chain" }, { name: "ERP & CRM" }],
+  },
+  {
+    name: "Semiconductor & Electronics",
+    children: [
+      { name: "Semiconductor" }, // New badge not supported by schema yet, treating as normal or could use isHeader if it meant 'badge'
+      { name: "Electronics" },
+      { name: "Quality Assurance" },
+    ],
+  },
+  {
+    name: "Healthcare & WSH",
+    children: [{ name: "Healthcare" }, { name: "Workplace Safety & Health" }],
+  },
+  {
+    name: "Sustainability & ESG",
+    children: [
+      { name: "Sustainability" },
+      { name: "ISO Standards" },
+      { name: "Hydroponics Urban Farming", isHeader: true },
+    ],
+  },
+];
 const courses = [
   {
-    name: "Finance for Non-Finance Managers",
+    name: "Generative AI Fundamentals",
     description:
-      '<p>Navigating the world of finance can be daunting, especially for those not rooted in its intricacies. Our course on <strong>"Finance for Non-Finance Managers"</strong> demystifies financial jargon and principles, ensuring participants confidently engage in financial discussions and make informed decisions. From understanding <strong>financial statements</strong> to budgeting and forecasting, we cover the crucial areas to empower managers in any domain.</p><p>A strong financial understanding is indispensable in today\'s dynamic business environment. This course is meticulously crafted to <strong>bridge the gap</strong> between financial experts and managers from other verticals. Equip yourself with the knowledge to analyze financial data, comprehend the financial health of an organization, and contribute more effectively to strategic planning and execution.</p>',
-    fee: 699.0,
+      "<p>This course demystifies the core concepts behind generative AI – from diffusion models to transformer‑based image and text generators. Participants will walk away with a practical understanding of how to build, fine‑tune, and evaluate generative models for real‑world business problems.</p>",
+    fee: 1199.0,
     topics:
-      "<h3>Topic 1 Understanding Financial Statements</h3><ul><li>Overview of Finance and Chart of Accounts</li><li>Balance Sheet Statement</li><li>Profit and Loss (P&L) Statement</li><li>Cash Flow Statement</li></ul><h3>Topic 2 Analysing Financial Ratios</h3><ul><li>Ratios for Corporate Profitability</li><li>Ratios for Corporate Performance</li><li>Equity Changes Statement</li></ul><h3>Topic 3 Planning & Budgeting using Financial Statements</h3><ul><li>Analyse Financial Statements</li><li>Financial Planning</li><li>Capital Budgeting</li></ul>",
+      "<h3>Topic 1 Foundations of Generative AI</h3><ul><li>Probabilistic Modeling & Latent Spaces</li><li>Variational Auto‑Encoders (VAEs)</li><li>Generative Adversarial Networks (GANs) Overview</li></ul><h3>Topic 2 Diffusion & Transformer Models</h3><ul><li>Diffusion Process & Denoising</li><li>Stable Diffusion, DALL‑E, Midjourney</li><li>Text‑to‑Image Transformers</li></ul><h3>Topic 3 Hands‑On Lab</h3><ul><li>Fine‑tuning a Stable Diffusion model</li><li>Generating synthetic data for downstream tasks</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>All participants will receive a Certificate of Completion from Tertiary Courses after achieved at least 75% attendance.</p><h4>Funding and Grant</h4><p><strong>HRD Corp Claimable Course</strong> for Employers Registered with HRD Corp</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses (75% attendance required).</p>",
     jobRoles:
-      "<ul><li>Department Managers</li><li>Team Leaders</li><li>Engineers</li><li>Sales & Marketing Personnel</li><li>Non-Financial Executives</li></ul>",
-    courseCode: "M574",
+      "<ul><li>Data Scientists</li><li>Product Managers</li><li>Creative Technologists</li></ul>",
+    courseCode: "AI101",
     trainers:
-      "<strong>Dr. Ahmad:</strong> Dr. Ahmad is a specialist consultancy that specialises in accounting, financial accounting, management accounting financial modeling, forecasting, valuation, model auditing, and management reporting for clients. He has about more than 18 years of working experience in an education, insurance, marketing, construction, consultancy, accounting and finance industry. He has worked with companies such as Malaysia National Insurance (MNI) Berhad, Taylors University College (KLMU), Lim Kok Wing University College (LKW), Kajima Malaysia, Remittance Company and started as freelance trainer/facilitator since 2007. He is skilled in the development and maintenance of analytical tools and financial models for middle-market to large corporate transactions and clients, at all levels of complexity.",
-    session: 1,
-    duration: 7.5,
+      "<strong>Dr. Priya Mehta:</strong> Senior AI researcher with 12 years experience building generative models for media & advertising.",
+    session: 2,
+    duration: 12,
     venue:
-      "Kuala Lumpur: G-3A-02, Suite Pejabat Korporat, KL Gateway. No.2, Jalan Kerinchi, Gerbang Kerinchi Lestari, 59200. Kuala Lumpur, Malaysia. <strong>|</strong> Penang: Jalan Sungai Dua, 11700 Penang, Malaysia.",
+      "Kuala Lumpur: Level 3, One Exchange, Jalan Tun‑Razak, 50400 Kuala Lumpur, Malaysia. <strong>|</strong> Penang: Suite B, Penang Tech Hub, 11700 Penang, Malaysia.",
     level: "Beginner",
     notes: {
       Disclaimer:
-        "The course dates displayed on our website are tentative and subject to trainer availability. We will confirm the final date after checking with the trainer. You are also welcome to email us your preferred date at sales@tertiarycourses.com.my, and we will do our best to coordinate with the trainer’s schedule.",
-      "Post-Course Support":
-        "We may provide consultation related to the subject matter after the course. Please email your queries to sales@tertiarycourses.com.my and we will forward your queries to the subject matter experts and get back to you asap.",
+        "Dates are provisional – final schedule confirmed after trainer availability.",
+      "Post‑Course Support":
+        "Two‑hour follow‑up Q&A session via Zoom within 30 days of course end.",
     },
-    categoryName: "Finance & Accounting",
+    categoryName: "Generative AI",
   },
   {
-    name: "Advanced Data Analytics with Python and Pandas",
+    name: "Agentic AI & Autonomous Decision‑Making",
     description:
-      "<p>Master <strong>data manipulation</strong>, visualization, and statistical analysis using the powerful <strong>Python ecosystem</strong>. This course covers NumPy, Pandas, Matplotlib, and scikit-learn for building robust analytical models. We focus on real-world case studies in <strong>business intelligence</strong> and <strong>predictive modeling</strong> to give you practical, job-ready skills.</p>",
+      "<p>Explore the emerging field of agentic AI – systems that can set goals, plan, and act autonomously in complex environments. The course covers reinforcement learning, hierarchical planning, and safety considerations for deploying autonomous agents.</p>",
+    fee: 1499.0,
+    topics:
+      "<h3>Topic 1 Agentic AI Basics</h3><ul><li>Definition & Taxonomy of Agents</li><li>Goal Specification & Reward Engineering</li></ul><h3>Topic 2 Learning & Planning</h3><ul><li>Model‑based & Model‑free RL</li><li>Hierarchical RL & Options Framework</li></ul><h3>Topic 3 Safety & Governance</h3><ul><li>Robustness, Explainability</li><li>Ethical & Regulatory Landscape</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Issued by Tertiary Courses upon successful completion.</p>",
+    jobRoles:
+      "<ul><li>AI Engineers</li><li>Robotics Developers</li><li>Strategic Technology Leaders</li></ul>",
+    courseCode: "AI102",
+    trainers:
+      "<strong>Prof. Daniel Tan:</strong> Professor of Autonomous Systems, author of “Agentic AI in Practice”, 15 years in robotics & RL research.",
+    session: 3,
+    duration: 15,
+    venue:
+      "Kuala Lumpur: Space B, KL Innovation Center, 50450 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer: "Course dates subject to change.",
+      "Post‑Course Support": "Access to a private Slack channel for 2 months.",
+    },
+    categoryName: "Agentic AI",
+  },
+  {
+    name: "Building AI Chatbots with LLMs",
+    description:
+      "<p>Learn how to design, develop, and deploy conversational agents powered by large language models. Covers prompt engineering, retrieval‑augmented generation, and integration with popular messaging platforms.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 Fundamentals of Chatbot Architecture</h3><ul><li>Rule‑based vs. LLM‑driven bots</li><li>Conversation flow design</li></ul><h3>Topic 2 Prompt Engineering & Retrieval</h3><ul><li>Effective prompting techniques</li><li>RAG pipelines (vector stores, embeddings)</li></ul><h3>Topic 3 Deployment & Monitoring</h3><ul><li>API integration (WhatsApp, Teams, Web)</li><li>Metrics, logging, continuous improvement</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Customer Experience Managers</li><li>AI Product Owners</li><li>Software Engineers</li></ul>",
+    courseCode: "AI103",
+    trainers:
+      "<strong>Aisha Rahman:</strong> Lead Conversational AI Engineer at a fintech unicorn, 8 years building production chatbots.",
+    session: 2,
+    duration: 10,
+    venue:
+      "Penang: Innovation Lab, Level 2, 23A Jalan Kelawai, 10200 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Lab environments use third‑party LLM APIs; costs may apply for exceeding free tier.",
+      "Post‑Course Support": "One month of free consulting (up to 4 hours).",
+    },
+    categoryName: "AI Chatbots",
+  },
+  {
+    name: "Creating Digital Humans for Immersive Experiences",
+    description:
+      "<p>Digital Humans combine photorealistic avatars with AI‑driven speech and emotion. This hands‑on workshop teaches you to model, rig, and animate digital humans and integrate them into virtual assistants, training simulators, or marketing campaigns.</p>",
+    fee: 1399.0,
+    topics:
+      "<h3>Topic 1 Anatomy of Digital Humans</h3><ul><li>3‑D scanning vs. sculpting</li><li>Facial rigging & blend‑shapes</li></ul><h3>Topic 2 AI‑Powered Speech & Emotion</h3><ul><li>Text‑to‑speech (Neural TTS)</li><li>Emotion inference from text</li></ul><h3>Topic 3 Integration & Real‑time Rendering</h3><ul><li>Unreal Engine & Unity pipelines</li><li>Web‑based deployment (WebGL, Metaverse)</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>XR Designers</li><li>Marketing Creatives</li><li>Training & Simulation Leads</li></ul>",
+    courseCode: "AI104",
+    trainers:
+      "<strong>Ravi Kumar:</strong> Senior Technical Artist at a leading VR studio, specialist in facial animation and AI‑driven avatars.",
+    session: 3,
+    duration: 14,
+    venue:
+      "Kuala Lumpur: Digital Innovation Centre, Suite 5, 8th Floor, 2‑Jalan Stuart, 50470 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer:
+        "Software licences (e.g., Unity Pro) are provided for the duration of the course.",
+      "Post‑Course Support":
+        "Access to project files and 2‑hour follow‑up review.",
+    },
+    categoryName: "AI Digital Humans",
+  },
+  {
+    name: "Large Language Models (LLM) – Theory & Practice",
+    description:
+      "<p>An intensive deep‑dive into transformer architectures, scaling laws, and fine‑tuning techniques that power modern LLMs such as GPT‑4, LLaMA, and Claude. Participants will train a small LLM from scratch on a GPU cluster and learn to adapt it for domain‑specific tasks.</p>",
+    fee: 1599.0,
+    topics:
+      "<h3>Topic 1 Transformer Fundamentals</h3><ul><li>Self‑attention, positional encoding</li><li>Scaling laws & model size trade‑offs</li></ul><h3>Topic 2 Training & Fine‑tuning</h3><ul><li>Dataset curation, tokenization</li><li>LoRA, PEFT, Q‑LoRA methods</li></ul><h3>Topic 3 Deployment & Inference</h3><ul><li>Quantization, distillation</li><li>API serving (FastAPI, Triton)</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>ML Researchers</li><li>Data Scientists</li><li>AI Product Engineers</li></ul>",
+    courseCode: "AI105",
+    trainers:
+      "<strong>Dr. Linh Pham:</strong> Research Scientist at a leading LLM lab, author of several open‑source LLM toolkits.",
+    session: 4,
+    duration: 18,
+    venue:
+      "Kuala Lumpur: AI Research Hub, Suite 12, 3rd Floor, 1‑Jalan Technology, 50490 Kuala Lumpur, Malaysia.",
+    level: "Advanced",
+    notes: {
+      Disclaimer:
+        "GPU resources are limited; participants may share compute nodes.",
+      "Post‑Course Support":
+        "Free 1‑month cloud credits on the partner GPU provider.",
+    },
+    categoryName: "Large Language Models (LLM)",
+  },
+  {
+    name: "Computer Vision with Python",
+    description:
+      "<p>From image preprocessing to object detection and segmentation, this course equips learners with the practical skills to build end‑to‑end CV pipelines using OpenCV, PyTorch, and TensorFlow.</p>",
+    fee: 1199.0,
+    topics:
+      "<h3>Topic 1 Image Fundamentals</h3><ul><li>Color spaces, filtering, edge detection</li></ul><h3>Topic 2 Deep Learning for Vision</h3><ul><li>CNN basics, Transfer learning (ResNet, EfficientNet)</li><li>Object detection (YOLO, Faster R‑CNN)</li></ul><h3>Topic 3 Projects & Deployment</h3><ul><li>Image classification API</li><li>Real‑time video analytics</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Computer Vision Engineers</li><li>Product Designers</li><li>Research Scientists</li></ul>",
+    courseCode: "CV101",
+    trainers:
+      "<strong>Ahmad Zulkifli:</strong> Senior Computer Vision Engineer, 10 years experience in facial recognition and surveillance systems.",
+    session: 2,
+    duration: 12,
+    venue:
+      "Penang: Vision Lab, Level 1, 45B Lorong Batu, 11500 Penang, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer: "Bring a laptop with CUDA‑capable GPU for best experience.",
+      "Post‑Course Support":
+        "Two weeks of office‑hour Q&A via Microsoft Teams.",
+    },
+    categoryName: "Computer Vision",
+  },
+  {
+    name: "Natural Language Processing (NLP) Essentials",
+    description:
+      "<p>Covering the full NLP pipeline – text preprocessing, embeddings, sequence models, and modern transformer‑based methods – this course is designed for developers who want to build intelligent language applications.</p>",
+    fee: 1099.0,
+    topics:
+      "<h3>Topic 1 Text Processing</h3><ul><li>Tokenization, stop‑word removal, stemming/lemmatization</li></ul><h3>Topic 2 Classical Methods</h3><ul><li>TF‑IDF, Word2Vec, GloVe</li><li>Naïve Bayes, SVM for text classification</li></ul><h3>Topic 3 Transformers & LLMs</h3><ul><li>BERT, RoBERTa fine‑tuning</li><li>Prompt engineering for downstream tasks</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Data Analysts</li><li>Content Engineers</li><li>AI Product Managers</li></ul>",
+    courseCode: "NLP101",
+    trainers:
+      "<strong>Dr. Siti Nurhaliza:</strong> NLP specialist with experience building chatbots for banking and e‑commerce.",
+    session: 3,
+    duration: 14,
+    venue:
+      "Kuala Lumpur: Language AI Lab, Suite 9, 4th Floor, 12‑Jalan Data, 50480 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Free tier of HuggingFace used for demos; larger models may need paid API keys.",
+      "Post‑Course Support": "Access to shared notebooks for 30 days.",
+    },
+    categoryName: "Natural Language Processing (NLP)",
+  },
+  {
+    name: "Generative Adversarial Networks (GAN) – Hands‑On",
+    description:
+      "<p>Deep dive into GAN theory, loss functions, and practical implementation. Students will build image‑to‑image translation, style transfer, and text‑to‑image models using PyTorch.</p>",
     fee: 1299.0,
     topics:
-      "<h3>Module 1: Python and Data Structures</h3><ul><li>NumPy for Array Operations</li><li>Pandas DataFrame Manipulation</li><li>Data Cleaning and Preprocessing Techniques</li></ul><h3>Module 2: Statistical Analysis</h3><ul><li>Inferential Statistics and Hypothesis Testing</li><li>Linear and Logistic Regression</li><li>Time Series Forecasting Basics</li></ul><h3>Module 3: Data Visualization and Reporting</h3><ul><li>Creating Advanced Plots with Matplotlib and Seaborn</li><li>Building Interactive Dashboards</li><li>Automated Report Generation</li></ul>",
+      "<h3>Topic 1 GAN Theory</h3><ul><li>Min‑max game, loss landscapes</li><li>DCGAN, WGAN‑GP</li></ul><h3>Topic 2 Advanced GANs</h3><ul><li>StyleGAN2, CycleGAN, Pix2Pix</li><li>Conditional GANs</li></ul><h3>Topic 3 Project Lab</h3><ul><li>Generate synthetic data for a downstream classifier</li><li>Deploy a GAN as a REST API</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>Certificate of Proficiency in Advanced Data Analytics awarded upon successful completion and project submission.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Special discount for group enrollments.</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
     jobRoles:
-      "<ul><li>Data Analysts</li><li>Business Intelligence Specialists</li><li>Data Scientists (Entry-level)</li><li>Financial Modellers</li><li>Market Researchers</li></ul>",
-    courseCode: "DA901",
+      "<ul><li>Creative Technologists</li><li>Computer Vision Engineers</li><li>Research Scientists</li></ul>",
+    courseCode: "GAN101",
     trainers:
-      "<strong>Ms. Siti Nor, CFA:</strong> Ms. Nor has over 10 years of experience in quantitative finance and data science. She specializes in using Python for large-scale data modeling and risk assessment for major investment banks. She is a certified Chartered Financial Analyst (CFA) and holds a Master's degree in Data Science.",
+      "<strong>Mohamed Al‑Farsi:</strong> AI researcher, author of ‘Practical GANs’, 9 years experience in generative media.",
     session: 3,
-    duration: 22.5,
-    venue: "Virtual/Online Only (Live Sessions).",
-    level: "Advanced",
-    notes: {
-      Prerequisites:
-        "Basic understanding of Python or another programming language is required.",
-      Software:
-        "Anaconda/Jupyter Notebook will be used. Free access provided for the duration of the course.",
-    },
-    categoryName: "Technology & Data",
-  },
-  {
-    name: "Effective Project Management: Agile and Scrum",
-    description:
-      "<p>Learn the essential skills and tools to manage projects from initiation to closure, with a sharp focus on <strong>Agile and Scrum methodologies</strong>. This course covers <strong>PMBOK principles</strong>, risk management, and effective stakeholder communication within a flexible framework. You'll learn to deliver value faster and respond quickly to change.</p>",
-    fee: 850.0,
-    topics:
-      "<h3>Phase 1: Project Initiation & Planning</h3><ul><li>Defining Project Scope and Objectives</li><li>Developing the Work Breakdown Structure (WBS)</li><li>Estimating Resources and Time</li></ul><h3>Phase 2: Agile Frameworks</h3><ul><li>Introduction to Scrum Roles and Events</li><li>Writing Effective User Stories and Product Backlog Management</li><li>Running Sprint Planning and Retrospectives</li></ul><h3>Phase 3: Monitoring & Control</h3><ul><li>Risk Identification and Response Planning</li><li>Tracking Progress with Burn-down Charts</li><li>Project Documentation and Closing</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certificate of Completion in Agile Project Management Fundamentals.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. PMP/CAPM continuing education units (PDUs) available.</p>",
-    jobRoles:
-      "<ul><li>Project Coordinators</li><li>Team Leads/Supervisors</li><li>Product Owners</li><li>Scrum Masters (Aspiring)</li><li>Anyone aspiring to a Project Management role</li></ul>",
-    courseCode: "PM205",
-    trainers:
-      "<strong>Ms. Evelyn Lim, PMP, CSM:</strong> Evelyn is a seasoned Project Management Professional (PMP) and Certified ScrumMaster (CSM) with over 15 years of experience leading cross-functional teams in the IT and Finance sectors. She is known for her practical, hands-on training style.",
-    session: 2,
-    duration: 15.0,
-    venue: "Kuala Lumpur, Training Centre Suite, Mid Valley. (Hybrid Format)",
+    duration: 12,
+    venue:
+      "Penang: AI Creative Studio, 3rd Floor, 78A Jalan Kecil, 11700 Penang, Malaysia.",
     level: "Intermediate",
     notes: {
-      Materials:
-        "Includes comprehensive course binder and access to online PM templates.",
-      Certification: "Prepares participants for basic Scrum certifications.",
+      Disclaimer: "Training large GANs may require external cloud GPU credits.",
+      "Post‑Course Support":
+        "One month of free cloud GPU credits (up to $150).",
     },
-    categoryName: "Management & Leadership",
+    categoryName: "Generative Adversarial Network (GAN)",
   },
   {
-    name: "Digital Marketing Strategy and SEO Optimization",
+    name: "Reinforcement Learning (RL) for Decision Systems",
     description:
-      "<p>Equip yourself with the knowledge to craft and execute a winning <strong>digital marketing strategy</strong>. Covers advanced <strong>SEO</strong>, content strategy, social media marketing, and <strong>performance analytics</strong> to drive measurable business growth and dominate the digital landscape. Learn how to convert clicks into customers.</p>",
-    fee: 950.0,
+      "<p>This course introduces the fundamentals of RL and enables participants to build agents for game AI, robotics, and business optimisation using OpenAI Gym, Stable‑Baselines3 and Ray RLlib.</p>",
+    fee: 1349.0,
     topics:
-      "<h3>Module 1: Strategic Foundations</h3><ul><li>Customer Journey Mapping in the Digital Age</li><li>Setting SMART Digital Objectives</li><li>Budget Allocation and ROI Analysis</li></ul><h3>Module 2: Search Engine Mastery</h3><ul><li>Advanced On-Page and Off-Page SEO Techniques</li><li>Google Ads (SEM) Campaign Management</li><li>Local SEO and Google My Business Optimization</li></ul><h3>Module 3: Content and Social Media</h3><ul><li>Content Marketing and Storytelling Frameworks</li><li>Social Media Campaign Management (Facebook, Instagram, LinkedIn)</li><li>Google Analytics and Performance Reporting</li></ul>",
+      "<h3>Topic 1 RL Foundations</h3><ul><li>Markov Decision Processes, Bellman equations</li><li>Policy vs. value‑based methods</li></ul><h3>Topic 2 Algorithms</h3><ul><li>DQN, PPO, A2C, SAC</li><li>Exploration strategies</li></ul><h3>Topic 3 Scalable RL</h3><ul><li>Ray RLlib distributed training</li><li>Real‑world case study: inventory management</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>Certified Digital Marketing Strategist (CDMS) certificate awarded.</p><h4>Funding and Grant</h4><p>SME Digitalisation Grant Eligible. HRD Corp Claimable Course.</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
     jobRoles:
-      "<ul><li>Marketing Executives</li><li>Business Owners</li><li>E-commerce Managers</li><li>Content Creators</li><li>PR Professionals</li></ul>",
+      "<ul><li>AI Engineers</li><li>Operations Analysts</li><li>Robotics Developers</li></ul>",
+    courseCode: "RL101",
+    trainers:
+      "<strong>Dr. Kevin Liu:</strong> Lead RL Scientist, 11 years building agents for supply‑chain optimisation.",
+    session: 4,
+    duration: 16,
+    venue:
+      "Kuala Lumpur: Advanced AI Lab, Suite 18, 7th Floor, 9‑Jalan Kuala, 50460 Kuala Lumpur, Malaysia.",
+    level: "Advanced",
+    notes: {
+      Disclaimer:
+        "Some environments require external simulators (e.g., Unity‑ML‑Agents).",
+      "Post‑Course Support":
+        "Two follow‑up webinars on scaling RL in production.",
+    },
+    categoryName: "Reinforcement Learning (RL)",
+  },
+  {
+    name: "PyTorch for Deep Learning",
+    description:
+      "<p>Hands‑on exploration of PyTorch – tensors, autograd, model building, and deployment. By the end of the course, participants will have built an end‑to‑end image classification pipeline.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 PyTorch Basics</h3><ul><li>Tensors, GPU acceleration</li><li>Autograd & custom loss functions</li></ul><h3>Topic 2 Neural Network Design</h3><ul><li>nn.Module, optimizers, learning rate schedulers</li><li>Transfer learning with pretrained models</li></ul><h3>Topic 3 Production</h3><ul><li>ONNX export, TorchServe, FastAPI</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>ML Engineers</li><li>Data Scientists</li><li>Research Engineers</li></ul>",
+    courseCode: "PT101",
+    trainers:
+      "<strong>Nurul Aisyah:</strong> Senior Machine Learning Engineer, 7 years of PyTorch deployments in fintech.",
+    session: 2,
+    duration: 10,
+    venue:
+      "Penang: AI Training Center, Suite 4, 12‑Jalan Kumbang, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "GPU‑enabled laptops recommended.",
+      "Post‑Course Support": "1‑hour code review session within 2 weeks.",
+    },
+    categoryName: "Pytorch",
+  },
+  {
+    name: "Keras, TensorFlow & JAX – Modern Deep Learning Stack",
+    description:
+      "<p>Compare three of the most popular deep‑learning frameworks. Learn when to choose Keras/TensorFlow, when JAX shines, and how to migrate models across them.</p>",
+    fee: 1199.0,
+    topics:
+      "<h3>Topic 1 TensorFlow/Keras</h3><ul><li>Functional API, tf.data pipelines</li></ul><h3>Topic 2 JAX Fundamentals</h3><ul><li>JIT compilation, vmap, automatic differentiation</li></ul><h3>Topic 3 Inter‑Framework Workflows</h3><ul><li>Model conversion (TF ↔︎ JAX), mixed‑precision training</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Deep Learning Researchers</li><li>AI Developers</li><li>Data Engineers</li></ul>",
+    courseCode: "DL102",
+    trainers:
+      "<strong>Prof. Chan Wei:</strong> Associate Professor, author of “Deep Learning with JAX”, 12 years academic + industry experience.",
+    session: 3,
+    duration: 12,
+    venue:
+      "Kuala Lumpur: Tech Hub, 2nd Floor, Block B, 5‑Jalan Inovasi, 50420 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer: "GPU resources provided for both TF and JAX labs.",
+      "Post‑Course Support": "Repository with starter notebooks for 3 months.",
+    },
+    categoryName: "Keras, Tensorflow & JAX",
+  },
+  {
+    name: "Scikit‑Learn for Classical Machine Learning",
+    description:
+      "<p>Focus on model building, evaluation, and pipelines using scikit‑learn. Ideal for business analysts and data scientists who need quick, interpretable solutions.</p>",
+    fee: 799.0,
+    topics:
+      "<h3>Topic 1 Data Preparation</h3><ul><li>Imputation, scaling, feature engineering</li></ul><h3>Topic 2 Supervised Learning</h3><ul><li>Regression, classification, ensemble methods</li></ul><h3>Topic 3 Model Management</h3><ul><li>Pipeline, cross‑validation, hyper‑parameter tuning (GridSearchCV)</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Business Analysts</li><li>Data Scientists</li><li>Product Managers</li></ul>",
+    courseCode: "SK101",
+    trainers:
+      "<strong>Linda Tan:</strong> Lead Data Analyst, 9 years using scikit‑learn for churn prediction and credit scoring.",
+    session: 2,
+    duration: 8,
+    venue:
+      "Penang: Data Lab, Suite 2, 34A Jalan Bunga, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "No GPU needed; all labs run on CPU.",
+      "Post‑Course Support": "One month of email Q&A.",
+    },
+    categoryName: "Scikit Learn",
+  },
+  {
+    name: "Azure Machine Learning & Amazon Bedrock",
+    description:
+      "<p>Learn to build, train, and deploy models on two leading cloud platforms. Covers Azure ML pipelines, MLOps, and using Amazon Bedrock’s foundation models for quick prototyping.</p>",
+    fee: 1399.0,
+    topics:
+      "<h3>Topic 1 Azure ML Studio</h3><ul><li>Compute targets, data stores, AutoML</li></ul><h3>Topic 2 MLOps on Azure</h3><ul><li>CI/CD with Azure DevOps, model versioning</li></ul><h3>Topic 3 Amazon Bedrock</h3><ul><li>Foundation model selection, prompt engineering, API integration</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Cloud AI Engineers</li><li>Data Platform Architects</li><li>Solution Consultants</li></ul>",
+    courseCode: "CLOUDAI01",
+    trainers:
+      "<strong>Samuel Ong:</strong> Cloud Solutions Architect, Microsoft Certified Trainer, 10 years building end‑to‑end MLOps pipelines.",
+    session: 3,
+    duration: 14,
+    venue:
+      "Kuala Lumpur: Cloud Innovation Centre, Suite 11, 6th Floor, 1‑Jalan Cloud, 50450 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer:
+        "Free tier credits for Azure and AWS are pre‑allocated for labs.",
+      "Post‑Course Support": "30‑day free consulting on Azure/Bedrock setup.",
+    },
+    categoryName: "Azure ML & Bedrock",
+  },
+  {
+    name: "R for Machine Learning & Statistics",
+    description:
+      "<p>A practical guide to using R for data manipulation, statistical modelling, and machine‑learning workflows. Learners will build regression, classification, and time‑series models using tidyverse and caret.</p>",
+    fee: 899.0,
+    topics:
+      "<h3>Topic 1 R Foundations</h3><ul><li>Data frames, dplyr, ggplot2</li></ul><h3>Topic 2 Statistical Modelling</h3><ul><li>Linear & logistic regression, ANOVA</li></ul><h3>Topic 3 Machine Learning with caret</h3><ul><li>Cross‑validation, hyper‑parameter tuning, model stacking</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Statisticians</li><li>Data Analysts</li><li>Research Scientists</li></ul>",
+    courseCode: "RML101",
+    trainers:
+      "<strong>Dr. Arif Abdullah:</strong> Professor of Biostatistics, author of “Applied R for Data Science”.",
+    session: 2,
+    duration: 10,
+    venue:
+      "Penang: R Analytics Hub, 2nd Floor, 55A Jalan Kecil, 11700 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "All labs run on RStudio Server (cloud).",
+      "Post‑Course Support": "Two follow‑up R‑script reviews.",
+    },
+    categoryName: "R ML",
+  },
+  {
+    name: "Data Management Foundations",
+    description:
+      "<p>This course covers data governance, data quality, master data management, and modern data‑lake architectures to help organisations treat data as a strategic asset.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 Data Governance</h3><ul><li>Policies, stewardship, lineage</li></ul><h3>Topic 2 Data Quality & Master Data Management</h3><ul><li>Profiling, cleansing, MDM concepts</li></ul><h3>Topic 3 Data Lake & Warehouse Design</h3><ul><li>Lakehouse, Delta Lake, Snowflake basics</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Data Engineers</li><li>Data Governance Leads</li><li>Business Analysts</li></ul>",
     courseCode: "DM101",
     trainers:
-      "<strong>Mr. Kenji Sato, Digital Consultant:</strong> Kenji is a global digital marketing consultant who has advised over 50 businesses across Southeast Asia on their online presence. His expertise lies in using data to optimize SEO and social media campaigns for maximum conversion.",
-    session: 3,
-    duration: 21.0,
-    venue: "Virtual/Online Only (Live Interactive Workshops)",
-    level: "Intermediate",
-    notes: {
-      Platform: "Zoom and dedicated learning management system for materials.",
-      "Case Studies":
-        "Includes analysis of successful regional digital campaigns and real-time SEO audits.",
-    },
-    categoryName: "Marketing & Sales",
-  },
-  {
-    name: "Cybersecurity for IT Professionals: Defensive Tactics",
-    description:
-      "<p>A comprehensive course focusing on <strong>defensive security tactics</strong>, network threat analysis, vulnerability management, and organizational compliance. This is <strong>essential knowledge</strong> for maintaining a secure enterprise IT environment and protecting against modern cyber threats. Hands-on labs prepare you for real-world scenarios.</p>",
-    fee: 1500.0,
-    topics:
-      "<h3>Area 1: Threat Landscape & Risk</h3><ul><li>Common Attack Vectors (Malware, Phishing, Ransomware)</li><li>Threat Modeling and Risk Assessment Frameworks</li><li>Developing Security Policies and Procedures</li></ul><h3>Area 2: Network & Infrastructure Defense</h3><ul><li>Firewall, IDS/IPS, and VPN Configuration</li><li>Endpoint Detection and Response (EDR)</li><li>Disaster Recovery and Business Continuity Planning</li></ul><h3>Area 3: Compliance and Incident Response</h3><ul><li>GDPR/PDPA Compliance Fundamentals</li><li>Vulnerability Scanning and Patch Management</li><li>Developing an Incident Response Plan (IRP)</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certified Cybersecurity Analyst (CCA) upon passing the final assessment.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Group discounts available for IT departments.</p>",
-    jobRoles:
-      "<ul><li>IT Managers</li><li>System Administrators</li><li>Network Engineers</li><li>Security Auditors</li><li>Compliance Officers</li></ul>",
-    courseCode: "CS400",
-    trainers:
-      "<strong>Dr. Hamid, CISSP:</strong> Dr. Hamid holds a PhD in Cyber Security and is a Certified Information Systems Security Professional (CISSP). He has led security operations centres (SOC) for multinational corporations and provides expert training on enterprise defense strategies.",
-    session: 4,
-    duration: 30.0,
+      "<strong>Fahmi Zakaria:</strong> Data Architecture Lead, 12 years building enterprise data platforms.",
+    session: 2,
+    duration: 12,
     venue:
-      "Kuala Lumpur, Cyberjaya Tech Hub. (State-of-the-art lab facilities)",
-    level: "Advanced",
-    notes: {
-      "Lab Sessions":
-        "Extensive hands-on labs with industry-standard security tools.",
-      "Exam Prep":
-        "Aligned with objectives for major security certification exams.",
-    },
-    categoryName: "Technology & Data",
-  },
-  {
-    name: "Interpersonal Communication Skills for Leaders",
-    description:
-      "<p>Develop high-impact <strong>communication strategies</strong> to motivate teams, resolve conflicts, and drive organizational alignment. Focuses intensely on <strong>active listening</strong>, non-verbal cues, and persuasive speaking for executive presence and effective team leadership.</p>",
-    fee: 550.0,
-    topics:
-      "<h3>Part 1: Foundational Communication</h3><ul><li>Understanding Communication Styles and Barriers</li><li>Mastering Active Listening Techniques</li><li>Decoding Non-Verbal Communication</li></ul><h3>Part 2: High-Stakes Interactions</h3><ul><li>Giving and Receiving Constructive Feedback Effectively</li><li>Conflict Resolution and Mediation Strategies</li><li>Facilitating Productive and Engaging Meetings</li></ul><h3>Part 3: Influence and Persuasion</h3><ul><li>Communicating Vision and Strategic Goals</li><li>Techniques for Persuasive Presentation (Storytelling)</li><li>Cross-Cultural Communication Competence</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certificate in Communication Leadership awarded.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Suitable for leadership development programs.</p>",
-    jobRoles:
-      "<ul><li>Managers and Senior Managers</li><li>Supervisors and Team Leaders</li><li>HR and Training Professionals</li><li>Sales and Business Development Executives</li></ul>",
-    courseCode: "COM150",
-    trainers:
-      "<strong>Ms. Nora Abdullah, Corporate Coach:</strong> Nora is a certified corporate trainer and executive coach with expertise in behavioral science and neuro-linguistic programming (NLP). She specializes in helping leaders enhance their emotional intelligence and communication impact.",
-    session: 1,
-    duration: 7.0,
-    venue: "Penang, Gurney Paragon Business Suite.",
-    level: "Beginner",
-    notes: {
-      Methodology:
-        "Highly interactive, featuring role-playing, video analysis, and immediate personalized feedback.",
-      Materials:
-        "Participant workbook and a 3-month post-course communication plan template provided.",
-    },
-    categoryName: "Management & Leadership",
-  },
-  {
-    name: "Human Resources Management Essentials: Legal Compliance",
-    description:
-      "<p>A foundational course covering the key functions of <strong>HR</strong>, including recruitment, compensation, performance management, and essential <strong>Malaysian employment law compliance</strong>. This knowledge is essential for new HR practitioners and small business owners to mitigate legal risk.</p>",
-    fee: 750.0,
-    topics:
-      "<h3>Module 1: HR Strategy and Planning</h3><ul><li>HR's Role in Business Strategy</li><li>Job Analysis and Competency Mapping</li><li>Workforce Planning and Budgeting</li></ul><h3>Module 2: Acquisition and Performance</h3><ul><li>Effective Recruitment and Selection Interview Techniques</li><li>Performance Appraisal Systems and Goal Setting</li><li>Training Needs Analysis (TNA)</li></ul><h3>Module 3: Compensation and Law</h3><ul><li>Designing Fair Compensation and Benefits Structures</li><li>Understanding the Employment Act 1955 and Amendments</li><li>Disciplinary Procedures and Managing Employee Grievances</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certificate of Completion in HR Essentials and Compliance.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course.</p>",
-    jobRoles:
-      "<ul><li>HR Assistants/Executives</li><li>Small Business Owners</li><li>Administrative Managers</li><li>Recruiters</li><li>Operations Managers (handling staff)</li></ul>",
-    courseCode: "HRM300",
-    trainers:
-      "<strong>Puan Sharifah, Senior HR Consultant:</strong> Puan Sharifah is a certified HRDF trainer and a practicing HR consultant specializing in Malaysian labor law and industrial relations. She has over 20 years of experience managing HR for local and foreign enterprises.",
-    session: 2,
-    duration: 14.0,
-    venue: "Kuala Lumpur, Bangsar South Office Complex.",
-    level: "Beginner",
-    notes: {
-      "Local Laws":
-        "Heavy emphasis on practical application of Malaysian employment law scenarios.",
-      Templates:
-        "Includes ready-to-use templates for employment contracts and HR forms.",
-    },
-    categoryName: "Human Resources",
-  },
-  {
-    name: "Cloud Computing Fundamentals: AWS & Azure",
-    description:
-      "<p>An introduction to the core concepts of <strong>cloud computing</strong>, covering models (IaaS, PaaS, SaaS), deployment strategies, and key services from major providers like <strong>AWS and Azure</strong>. Ideal for IT professionals and technical decision-makers planning a cloud migration strategy.</p>",
-    fee: 1100.0,
-    topics:
-      "<h3>Section 1: Core Cloud Concepts</h3><ul><li>Cloud Service Models and Deployment Types</li><li>Benefits, Risks, and Challenges of Cloud Adoption</li><li>Cloud Security, Compliance, and Shared Responsibility Model</li></ul><h3>Section 2: AWS Core Services</h3><ul><li>Compute (EC2, Lambda) and Storage (S3, EBS)</li><li>Networking (VPC) and Database Services (RDS)</li></ul><h3>Section 3: Azure Core Services</h3><ul><li>Virtual Machines and Azure Functions</li><li>Azure Storage and Networking (VNet)</li><li>Billing, Cost Optimization, and Cloud Governance</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Cloud Computing Foundation Certificate recognized by the industry.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Aligned with major vendor foundational exams.</p>",
-    jobRoles:
-      "<ul><li>IT Staff and Technicians</li><li>Software Developers</li><li>Business Analysts (Cloud-focused)</li><li>Technical Sales and Pre-sales</li></ul>",
-    courseCode: "CC500",
-    trainers:
-      "<strong>Mr. Jason Wong, AWS Certified Solutions Architect:</strong> Jason is a certified expert in both AWS and Azure. He has led cloud infrastructure deployments for several Fintech startups and is known for simplifying complex cloud architecture concepts.",
-    session: 2,
-    duration: 16.0,
-    venue: "Virtual/Online Only (Self-Paced with weekly Live Q&A).",
-    level: "Beginner",
-    notes: {
-      "Exam Prep":
-        "Covers objectives for the AWS Certified Cloud Practitioner and Azure Fundamentals exams.",
-      Access:
-        "Participants get temporary access to a lab environment for hands-on practice.",
-    },
-    categoryName: "Technology & Data",
-  },
-  {
-    name: "Customer Relationship Management (CRM) Strategy",
-    description:
-      "<p>Learn to develop a holistic <strong>CRM strategy</strong> that improves customer loyalty, drives sales, and increases profitability. Focus on utilizing CRM software effectively (e.g., Salesforce, Dynamics) to unify customer experience across all channels and touchpoints.</p>",
-    fee: 890.0,
-    topics:
-      "<h3>Part A: Strategic CRM</h3><ul><li>Defining Customer Lifetime Value (CLV) and Retention Metrics</li><li>Mapping and Optimizing the Customer Experience Journey</li><li>Aligning CRM with overall Business Strategy</li></ul><h3>Part B: Technology and Implementation</h3><ul><li>Selecting and Implementing the Right CRM Platform</li><li>Sales, Marketing, and Service Process Automation</li><li>Data Quality, Migration, and Governance</li></ul><h3>Part C: Measurement and Optimization</h3><ul><li>Key Performance Indicators (KPIs) for CRM Success</li><li>Utilizing Customer Feedback (NPS, CSAT)</li><li>Advanced Segmentation and Personalization Strategies</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certified CRM Specialist awarded by our training academy.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Consult us for customized team training.</p>",
-    jobRoles:
-      "<ul><li>Sales Managers and Directors</li><li>Marketing Specialists</li><li>Customer Service Leads and Managers</li><li>Business Analysts (Process focus)</li><li>IT Managers (CRM Implementation)</li></ul>",
-    courseCode: "CRM700",
-    trainers:
-      "<strong>Mr. David Chee, Business Strategist:</strong> David is a seasoned business transformation consultant with expertise in CRM and digital transformation. He has successfully implemented CRM solutions for SMEs and large corporations to drive bottom-line growth.",
-    session: 2,
-    duration: 15.0,
-    venue: "Penang, Bayan Lepas Corporate Suites.",
+      "Kuala Lumpur: Data Strategy Center, Suite 3, 8th Floor, 3‑Jalan Data, 50430 Kuala Lumpur, Malaysia.",
     level: "Intermediate",
     notes: {
-      "Software Focus":
-        "Practical case studies and hands-on exercises using a demo CRM environment.",
-      Takeaway:
-        "Participants will complete the course with a draft CRM implementation roadmap.",
+      Disclaimer: "Hands‑on labs use Azure Synapse & AWS S3 free tiers.",
+      "Post‑Course Support": "One‑hour data‑architecture review.",
     },
-    categoryName: "Marketing & Sales",
+    categoryName: "Data Management",
   },
   {
-    name: "Advanced Microsoft Excel for Business Analysis",
+    name: "Programming Fundamentals (Python & JavaScript)",
     description:
-      "<p>Move beyond basic functions to master powerful <strong>Excel features</strong> like PivotTables, VLOOKUP/XLOOKUP, macros, and advanced data visualization. This course is essential for financial analysts and anyone in data-intensive reporting roles looking to enhance efficiency.</p>",
-    fee: 599.0,
+      "<p>A starter course for non‑technical professionals. Covers programming logic, variables, control flow, functions, and basic web scripting.</p>",
+    fee: 749.0,
     topics:
-      "<h3>Topic 1: Advanced Formulas and Functions</h3><ul><li>Advanced Logical and Text Functions</li><li>Dynamic Array Formulas (e.g., FILTER, UNIQUE)</li><li>Data Validation and Auditing Techniques</li></ul><h3>Topic 2: Data Modeling and BI Tools</h3><ul><li>Mastering PivotTables and PivotCharts</li><li>Using Power Query for Data Transformation and Cleanup</li><li>Introduction to Data Modeling with Power Pivot</li></ul><h3>Topic 3: Automation and Visualization</h3><ul><li>Recording and Editing Macros (Introduction to VBA)</li><li>Creating Interactive Dashboards with Slicers</li><li>What-If Analysis: Goal Seek, Solver, and Scenarios</li></ul>",
+      "<h3>Topic 1 Basics of Programming</h3><ul><li>Variables, data types, operators</li></ul><h3>Topic 2 Control Structures</h3><ul><li>If/else, loops, error handling</li></ul><h3>Topic 3 Intro to Web Scripting</h3><ul><li>HTML, CSS fundamentals, JavaScript DOM manipulation</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>Advanced Excel Proficiency Certificate awarded.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course.</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
     jobRoles:
-      "<ul><li>Financial Analysts</li><li>Accounting Staff</li><li>Business Analysts</li><li>Administrative Assistants (Advanced)</li><li>Anyone who handles large datasets and reporting</li></ul>",
-    courseCode: "EXL301",
+      "<ul><li>Business Analysts</li><li>Product Coordinators</li><li>Marketing Technologists</li></ul>",
+    courseCode: "PROG101",
     trainers:
-      "<strong>Ms. Lily Chow, Microsoft Office Specialist:</strong> Lily is a certified Microsoft Office Specialist Master Trainer with over 10,000 hours of training experience. She is celebrated for her ability to simplify complex Excel concepts into easy-to-apply business solutions.",
-    session: 2,
-    duration: 15.0,
-    venue: "Kuala Lumpur, Training Lab at KLCC. (Dedicated computer lab)",
-    level: "Intermediate",
-    notes: {
-      Requirement:
-        "Participants must bring a laptop with MS Excel 2016 or later (with Power Query/Pivot Add-ins).",
-      Files:
-        "Includes practice files, solutions, and ready-made dashboard templates.",
-    },
-    categoryName: "Finance & Accounting",
-  },
-  {
-    name: "Strategic Negotiation Skills and Conflict Resolution",
-    description:
-      "<p>Develop and apply practical <strong>negotiation strategies</strong> that lead to win-win outcomes. This course focuses on psychological tactics, thorough preparation, and managing difficult conversations to resolve conflicts <strong>constructively</strong> and secure better deals for your organization.</p>",
-    fee: 650.0,
-    topics:
-      "<h3>Module 1: The Negotiation Framework</h3><ul><li>BATNA, ZOPA, and Reservation Price</li><li>The Psychology of Persuasion</li><li>Effective Preparation and Research</li></ul><h3>Module 2: Negotiation Tactics</h3><ul><li>Distributive vs. Integrative Negotiation</li><li>Handling Deadlocks and High-Pressure Tactics</li><li>Cross-Cultural Negotiation Considerations</li></ul><h3>Module 3: Conflict Resolution</h3><ul><li>Identifying Conflict Styles</li><li>Managing Difficult Conversations and Emotional Intelligence</li><li>Mediation and Consensus-Building</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Certificate in Strategic Negotiation and Conflict Resolution.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Highly recommended for procurement and sales teams.</p>",
-    jobRoles:
-      "<ul><li>Sales and Procurement Professionals</li><li>Managers and Executives</li><li>HR/Industrial Relations Staff</li><li>Anyone involved in contracts or client management</li></ul>",
-    courseCode: "BUS450",
-    trainers:
-      "<strong>Mr. Michael Tan, Certified Mediator:</strong> Michael is a corporate training specialist and a certified mediator. His training approach incorporates Harvard Negotiation Project principles and real-life business scenarios.",
-    session: 1,
-    duration: 7.5,
-    venue: "Kuala Lumpur, PJ Trade Centre, Petaling Jaya.",
-    level: "Intermediate",
-    notes: {
-      Methodology:
-        "Intensive practice through video-recorded role-playing and debrief sessions.",
-      Materials: "Workbook with negotiation checklists and planning tools.",
-    },
-    categoryName: "Management & Leadership",
-  },
-  {
-    name: "Introduction to Data Science and Machine Learning",
-    description:
-      "<p>A beginner-friendly course introducing the full lifecycle of a <strong>data science project</strong>, covering data collection, cleaning, exploratory analysis, and building simple <strong>machine learning models</strong> (e.g., clustering, classification). Start your journey into AI and data-driven decision-making.</p>",
-    fee: 1390.0,
-    topics:
-      "<h3>Phase 1: Data Science Ecosystem</h3><ul><li>What is Data Science and its applications?</li><li>Introduction to R and Python for Data Science</li><li>Data Acquisition and Data Quality Assessment</li></ul><h3>Phase 2: Exploratory Data Analysis (EDA)</h3><ul><li>Statistical Fundamentals for Data Science</li><li>Data Visualization Best Practices</li><li>Feature Engineering Techniques</li></ul><h3>Phase 3: Building ML Models</h3><ul><li>Supervised vs. Unsupervised Learning</li><li>Introduction to Classification (e.g., Decision Trees)</li><li>Evaluating Model Performance (Accuracy, Precision, Recall)</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Data Science Foundation Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course.</p>",
-    jobRoles:
-      "<ul><li>IT Professionals seeking a career change</li><li>Business Analysts</li><li>University Graduates</li><li>Anyone interested in the fundamentals of AI/ML</li></ul>",
-    courseCode: "DS100",
-    trainers:
-      "<strong>Dr. Wei Lun, PhD in CS:</strong> Dr. Wei has a Ph.D. in Computer Science specializing in Machine Learning. He actively consults on AI implementation for manufacturing and logistics companies.",
+      "<strong>Lee Ming:</strong> Senior Software Engineer, 8 years teaching introductory programming.</",
     session: 3,
-    duration: 24.0,
-    venue: "Virtual/Online Only (Evening Sessions).",
+    duration: 15,
+    venue:
+      "Penang: Coding Academy, Suite 6, 22 Jalan Kuala, 11500 Penang, Malaysia.",
     level: "Beginner",
     notes: {
-      Prerequisites: "No prior programming experience necessary.",
-      Projects:
-        "Includes a mini-project where participants build their first ML model.",
+      Disclaimer: "No prior coding experience required.",
+      "Post‑Course Support":
+        "Access to a community Discord channel for 2 months.",
     },
-    categoryName: "Technology & Data",
+    categoryName: "Programming",
   },
   {
-    name: "Practical Budgeting and Cost Control",
+    name: "Quantum Computing Basics",
     description:
-      "<p>Equip participants with the practical skills to prepare, manage, and <strong>control departmental or project budgets</strong>. Focuses on variance analysis, forecasting techniques, and effective <strong>cost management strategies</strong> to increase profitability.</p>",
-    fee: 680.0,
+      "<p>Introduce quantum bits, superposition, entanglement, and how to program quantum circuits using Qiskit. Ideal for tech leaders curious about the impact of quantum on their industry.</p>",
+    fee: 1299.0,
     topics:
-      "<h3>Section A: Budgeting Fundamentals</h3><ul><li>Types of Budgets (Zero-Based, Incremental, Activity-Based)</li><li>The Budgeting Process: Planning to Approval</li><li>Sales Forecasting and Expense Estimation</li></ul><h3>Section B: Cost Control and Monitoring</h3><ul><li>Fixed vs. Variable Costs and Cost Drivers</li><li>Variance Analysis: Investigating Differences</li><li>Techniques for Cost Reduction and Optimization</li></ul><h3>Section C: Performance Reporting</h3><ul><li>Creating Budget vs. Actual Reports</li><li>Using Budgets for Decision-Making</li><li>Rolling Forecasts and Beyond Budgeting</li></ul>",
+      "<h3>Topic 1 Quantum Theory Primer</h3><ul><li>Qubits, gates, measurement</li></ul><h3>Topic 2 Quantum Algorithms</h3><ul><li>Deutsch‑Jozsa, Grover’s search</li></ul><h3>Topic 3 Hands‑On with Qiskit</h3><ul><li>Building circuits, running on IBM Quantum Experience</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>Certificate of Proficiency in Budgeting and Cost Control.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Suitable for operations and middle management.</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
     jobRoles:
-      "<ul><li>Department Managers</li><li>Finance Executives</li><li>Operations Staff</li><li>Cost Accountants</li><li>Project Managers</li></ul>",
-    courseCode: "FIN210",
+      "<ul><li>Research Engineers</li><li>Innovation Leads</li><li>Strategic technologists</li></ul>",
+    courseCode: "QC101",
     trainers:
-      "<strong>Ms. Shirley Koo, CPA:</strong> Shirley is a Certified Public Accountant (CPA) with over 12 years of experience as a Financial Controller. She provides practical, real-world examples from her corporate finance career.",
-    session: 1,
-    duration: 8.0,
-    venue: "Johor Bahru, Taman Molek Business Park.",
-    level: "Intermediate",
-    notes: {
-      "Case Studies":
-        "Includes an in-depth case study on creating a full annual operational budget.",
-      Software: "Templates provided in Microsoft Excel format.",
-    },
-    categoryName: "Finance & Accounting",
-  },
-  {
-    name: "Public Speaking and Presentation Mastery",
-    description:
-      "<p>Overcome fear and deliver engaging, <strong>persuasive presentations</strong>. This course focuses on structuring content, utilizing visual aids, and mastering voice and body language for <strong>maximum impact</strong> in any professional setting. Turn stage fright into confidence.</p>",
-    fee: 580.0,
-    topics:
-      "<h3>Part 1: Preparation and Structure</h3><ul><li>Analyzing Your Audience and Purpose</li><li>Developing a Compelling Core Message</li><li>Structuring Your Presentation (Hook, Body, Close)</li></ul><h3>Part 2: Delivery Techniques</h3><ul><li>Mastering Body Language and Eye Contact</li><li>Vocal Variety, Pacing, and Pauses</li><li>Handling Q&A Sessions Confidently</li></ul><h3>Part 3: Persuasion and Visuals</h3><ul><li>Designing Effective and Minimalist Slides</li><li>Storytelling Techniques for Impact</li><li>Managing Nerves and Anxiety</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Presentation Mastery Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Great for management communication training.</p>",
-    jobRoles:
-      "<ul><li>Executives and Managers</li><li>Sales and Marketing Staff</li><li>Trainers and Educators</li><li>Anyone who presents to internal or external audiences</li></ul>",
-    courseCode: "COM101",
-    trainers:
-      "<strong>Mr. Benjamin Ng, Toastmasters DTM:</strong> Ben is a Distinguished Toastmaster (DTM) and a professional corporate speaker. He provides constructive, immediate feedback on delivery and content.",
-    session: 1,
-    duration: 7.0,
-    venue: "Kuala Lumpur, KL Gateway Office Park.",
-    level: "Beginner",
-    notes: {
-      Methodology:
-        "Participants will deliver a minimum of three recorded presentations with peer and trainer feedback.",
-      Coaching: "Includes one 30-minute post-course virtual coaching session.",
-    },
-    categoryName: "Personal Development",
-  },
-  {
-    name: "Mastering Power BI for Data Visualization",
-    description:
-      "<p>Learn to connect to various data sources, clean and transform data, build robust data models, and create interactive, stunning <strong>dashboards</strong> using <strong>Microsoft Power BI</strong> for informed and rapid decision-making across the business.</p>",
-    fee: 980.0,
-    topics:
-      "<h3>Module 1: Data Connection and Transformation</h3><ul><li>Connecting to Different Data Sources (Excel, SQL, Web)</li><li>Data Shaping and Cleaning with Power Query Editor</li><li>Understanding Data Normalization and Relationships</li></ul><h3>Module 2: Data Modeling with DAX</h3><ul><li>Creating a Star Schema Model</li><li>Introduction to DAX (Data Analysis Expressions)</li><li>Creating Calculated Columns and Measures</li></ul><h3>Module 3: Report and Dashboard Design</h3><ul><li>Choosing the Right Visualizations</li><li>Creating Interactive Filters and Slicers</li><li>Publishing and Sharing Reports in Power BI Service</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Power BI Data Visualization Specialist Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Special focus on business reporting.</p>",
-    jobRoles:
-      "<ul><li>Business Intelligence Analysts</li><li>Financial Analysts</li><li>Data Report Developers</li><li>IT Managers (Reporting systems)</li></ul>",
-    courseCode: "BI600",
-    trainers:
-      "<strong>Ms. Farah Binti, Data Consultant:</strong> Farah is a certified Microsoft Data Analyst specializing in Power BI and Azure data services. She has delivered BI solutions for telecommunications and retail giants.",
+      "<strong>Dr. Ananya Rao:</strong> Quantum scientist, 10 years in quantum algorithm development.",
     session: 2,
-    duration: 15.0,
-    venue: "Virtual/Online Only (Hands-on Lab via Remote Desktop).",
-    level: "Intermediate",
-    notes: {
-      Requirement: "Basic knowledge of data concepts is helpful.",
-      Software:
-        "Trial version of Power BI Desktop will be used. Installation instructions provided.",
-    },
-    categoryName: "Technology & Data",
-  },
-  {
-    name: "Supply Chain Management and Logistics Optimization",
-    description:
-      "<p>A comprehensive overview of modern <strong>supply chain management</strong>, covering procurement, inventory control, warehousing, and transportation to achieve operational efficiency, <strong>cost reduction</strong>, and higher customer satisfaction. Learn to build a resilient and agile supply chain.</p>",
-    fee: 900.0,
-    topics:
-      "<h3>Topic 1: SC Strategy and Design</h3><ul><li>The Role of SCM in Business Strategy</li><li>Designing the Global Supply Chain Network</li><li>Risk Management and Resilience</li></ul><h3>Topic 2: Procurement and Inventory</h3><ul><li>Strategic Sourcing and Supplier Relationship Management (SRM)</li><li>Inventory Control Models (EOQ, JIT)</li><li>Demand Planning and Forecasting</li></ul><h3>Topic 3: Logistics and Technology</h3><ul><li>Transportation Management and Route Optimization</li><li>Warehouse Operations and Layout</li><li>Introduction to SC Technology (ERP, WMS)</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Supply Chain and Logistics Professional Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Ideal for manufacturing and retail sectors.</p>",
-    jobRoles:
-      "<ul><li>Supply Chain Managers</li><li>Logistics Coordinators</li><li>Procurement Officers</li><li>Inventory and Warehouse Managers</li></ul>",
-    courseCode: "SCM501",
-    trainers:
-      "<strong>Mr. Samy Vellu, Logistics Expert:</strong> Samy has over 25 years of experience in regional logistics and supply chain management for FMCG companies. He holds a CSCMP certification.",
-    session: 2,
-    duration: 16.0,
-    venue: "Penang, Butterworth Industrial Area Training Center.",
-    level: "Intermediate",
-    notes: {
-      "Case Studies":
-        "Focuses on optimizing local and regional logistics networks.",
-      "Site Visit":
-        "May include an optional visit to a modern warehouse facility.",
-    },
-    categoryName: "Operations & Logistics",
-  },
-  {
-    name: "Creative Thinking and Problem Solving Workshop",
-    description:
-      "<p>Unlock your team's <strong>creative potential</strong>. This hands-on workshop introduces powerful techniques (e.g., Six Thinking Hats, SCAMPER) to generate innovative solutions and tackle complex business problems with a structured yet <strong>imaginative approach</strong>.</p>",
-    fee: 520.0,
-    topics:
-      "<h3>Phase 1: Defining the Problem</h3><ul><li>Root Cause Analysis (e.g., 5 Whys, Fishbone)</li><li>Shifting Perspectives and Reframing the Challenge</li><li>Identifying Constraints and Assumptions</li></ul><h3>Phase 2: Idea Generation</h3><ul><li>Brainstorming and Mind Mapping Techniques</li><li>SCAMPER and Lateral Thinking</li><li>Prototyping and Rapid Experimentation</li></ul><h3>Phase 3: Selection and Implementation</h3><ul><li>Idea Evaluation and Prioritization Matrices</li><li>Developing an Action Plan for Implementation</li><li>Overcoming Resistance to Change</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Creative Problem Solving Workshop Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Excellent for team building and innovation initiatives.</p>",
-    jobRoles:
-      "<ul><li>All Employees (especially those in R&D or Continuous Improvement)</li><li>Team Leaders and Supervisors</li><li>Innovation Committee Members</li></ul>",
-    courseCode: "INN120",
-    trainers:
-      "<strong>Ms. Mei Ling, Innovation Facilitator:</strong> Mei Ling is a certified design thinking and creativity facilitator. She runs high-energy, immersive workshops designed to foster a culture of innovation.",
-    session: 1,
-    duration: 7.0,
-    venue: "Kuala Lumpur, Co-working Space, TRX.",
+    duration: 10,
+    venue:
+      "Kuala Lumpur: Quantum Lab, 4th Floor, 9‑Jalan Quantum, 50470 Kuala Lumpur, Malaysia.",
     level: "Beginner",
     notes: {
-      Methodology: "100% activity-based and highly interactive.",
-      Takeaway: "A toolkit of problem-solving methods for immediate use.",
+      Disclaimer: "All simulations run on IBM Cloud’s free quantum sandbox.",
+      "Post‑Course Support": "Free access to Qiskit tutorials for 30 days.",
     },
-    categoryName: "Personal Development",
+    categoryName: "Quantum Computing",
   },
   {
-    name: "Front-End Web Development with ReactJS",
+    name: "Cloud Computing Essentials (AWS & Azure)",
     description:
-      "<p>A deep dive into building modern, scalable <strong>single-page applications (SPAs)</strong> using <strong>React</strong>, the industry-leading JavaScript library. Covers component-based architecture, state management (Hooks), and routing. Essential for becoming a professional web developer.</p>",
-    fee: 1600.0,
+      "<p>Fundamentals of cloud services – compute, storage, networking, security – with hands‑on labs on AWS and Azure. Participants will deploy a three‑tier web application.</p>",
+    fee: 1199.0,
     topics:
-      "<h3>Module 1: React Fundamentals</h3><ul><li>Introduction to JSX and Functional Components</li><li>Understanding State and Props</li><li>Event Handling and Component Lifecycle</li></ul><h3>Module 2: Advanced React</h3><ul><li>Mastering React Hooks (useState, useEffect, useContext)</li><li>Client-Side Routing with React Router</li><li>Form Handling and Validation</li></ul><h3>Module 3: Project and Deployment</h3><ul><li>Integration with RESTful APIs</li><li>Introduction to Redux/Zustand for State Management</li><li>Building and Deploying a Complete SPA</li></ul>",
+      "<h3>Topic 1 Core Cloud Concepts</h3><ul><li>IaaS, PaaS, SaaS, regions, availability zones</li></ul><h3>Topic 2 AWS Lab</h3><ul><li>EC2, S3, RDS, IAM</li></ul><h3>Topic 3 Azure Lab</h3><ul><li>VM, Blob Storage, Azure SQL, RBAC</li></ul>",
     courseInfo:
-      "<h4>Certificate</h4><p>Certified ReactJS Developer Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Tech talent development program eligible.</p>",
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
     jobRoles:
-      "<ul><li>Software Developers (up-skilling)</li><li>UI/UX Designers (transitioning to code)</li><li>Full-Stack Developers</li></ul>",
-    courseCode: "DEV805",
+      "<ul><li>Cloud Engineers</li><li>System Administrators</li><li>DevOps Specialists</li></ul>",
+    courseCode: "CLOUD101",
     trainers:
-      "<strong>Mr. Chris Lee, Principal Software Engineer:</strong> Chris is a principal engineer at a major tech firm, specializing in large-scale front-end systems. He's passionate about modern JavaScript frameworks and clean code principles.",
+      "<strong>Nazri Hisham:</strong> Cloud Architect, 12 years designing multi‑cloud solutions.",
+    session: 3,
+    duration: 14,
+    venue:
+      "Penang: Cloud Learning Center, Suite 1, 33 Jalan Lang, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Free tier credits for AWS and Azure are allocated for the duration of the course.",
+      "Post‑Course Support":
+        "One month of post‑lab troubleshooting assistance.",
+    },
+    categoryName: "Cloud Computing",
+  },
+  {
+    name: "Cyber Security Fundamentals",
+    description:
+      "<p>Learn the principles of information security, threat modeling, network defense, and incident response. Includes labs on Wireshark, Metasploit, and cloud security best practices.</p>",
+    fee: 1099.0,
+    topics:
+      "<h3>Topic 1 Security Basics</h3><ul><li>Confidentiality, Integrity, Availability, CIA triad</li></ul><h3>Topic 2 Defensive Techniques</h3><ul><li>Firewalls, IDS/IPS, VPNs</li></ul><h3>Topic 3 Hands‑On Labs</h3><ul><li>Network sniffing, vulnerability scanning, basic pentesting</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Security Analysts</li><li>IT Administrators</li><li>Compliance Officers</li></ul>",
+    courseCode: "SEC101",
+    trainers:
+      "<strong>Rashid Al‑Bahar:</strong> Certified Ethical Hacker (CEH), 9 years in SOC operations.",
+    session: 2,
+    duration: 12,
+    venue:
+      "Kuala Lumpur: SecureTech Lab, Suite 7, 5th Floor, 8‑Jalan Secure, 50440 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Labs use isolated virtual environments; no real systems are harmed.",
+      "Post‑Course Support":
+        "Two‑hour follow‑up incident‑response tabletop exercise.",
+    },
+    categoryName: "Cyber Security",
+  },
+
+  {
+    name: "Content Management Systems (CMS) – WordPress & Headless",
+    description:
+      "<p>Explore traditional CMS (WordPress) and modern headless approaches (Strapi, Contentful). Build and publish a site, then expose content via APIs.</p>",
+    fee: 849.0,
+    topics:
+      "<h3>Topic 1 WordPress Basics</h3><ul><li>Installation, themes, plugins, SEO basics</li></ul><h3>Topic 2 Headless CMS</h3><ul><li>Content modeling, API delivery, JAMstack integration</li></ul><h3>Topic 3 Deployment</h3><ul><li>Static site generators, Netlify/Vercel hosting</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Web Content Editors</li><li>Digital Marketers</li><li>Front‑end Developers</li></ul>",
+    courseCode: "CMS101",
+    trainers:
+      "<strong>Ani Liyana:</strong> Senior Front‑end Engineer, 10 years building WordPress and headless sites.",
+    session: 2,
+    duration: 9,
+    venue:
+      "Penang: Digital Media Hub, Suite 3, 12 Jalan Teknologi, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "WordPress labs run on a shared LAMP stack; headless labs use Netlify free tier.",
+      "Post‑Course Support": "30‑day email support for deployment issues.",
+    },
+    categoryName: "Content Management",
+  },
+
+  {
+    name: "e‑Commerce Strategy & Platform Implementation",
+    description:
+      "<p>From market analysis to platform selection (Shopify, WooCommerce, Magento) and omnichannel fulfillment. Includes a capstone project of launching a live store.</p>",
+    fee: 1249.0,
+    topics:
+      "<h3>Topic 1 e‑Commerce Foundations</h3><ul><li>Business models, payment gateways, logistics</li></ul><h3>Topic 2 Platform Deep‑Dive</h3><ul><li>Shopify store setup, WooCommerce customization, Magento architecture</li></ul><h3>Topic 3 Marketing & Analytics</h3><ul><li>SEO, paid ads, conversion tracking</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>e‑Commerce Managers</li><li>Digital Business Strategists</li><li>Product Owners</li></ul>",
+    courseCode: "ECOM101",
+    trainers:
+      "<strong>Rohit Menon:</strong> e‑Commerce consultant, 12 years launching multi‑national online stores.",
+    session: 3,
+    duration: 16,
+    venue:
+      "Kuala Lumpur: Retail Innovation Center, Suite 15, 10th Floor, 4‑Jalan Retail, 50460 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer:
+        "Live store demo runs on a sandbox domain; no real transactions processed.",
+      "Post‑Course Support": "One‑hour post‑launch health check.",
+    },
+    categoryName: "e-Commerce",
+  },
+
+  {
+    name: "Full Stack Web Development (MERN)",
+    description:
+      "<p>Learn to build modern web applications using MongoDB, Express, React, and Node.js. Includes API design, authentication, state management, and deployment.</p>",
+    fee: 1399.0,
+    topics:
+      "<h3>Topic 1 Backend with Node & Express</h3><ul><li>RESTful APIs, JWT authentication, MVC pattern</li></ul><h3>Topic 2 Frontend with React</h3><ul><li>Hooks, Redux, UI component libraries</li></ul><h3>Topic 3 Full‑Stack Integration & DevOps</h3><ul><li>MongoDB Atlas, Docker, CI/CD pipelines</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Full‑Stack Engineers</li><li>Web Developers</li><li>Technical Leads</li></ul>",
+    courseCode: "FSW101",
+    trainers:
+      "<strong>Leong Jia Han:</strong> Senior Software Engineer, 10 years building MERN applications for fintech.",
     session: 4,
-    duration: 32.0,
-    venue: "Virtual/Online Only (Code-along sessions).",
-    level: "Advanced",
-    notes: {
-      Prerequisites:
-        "Intermediate knowledge of HTML, CSS, and JavaScript is essential.",
-      Project: "Participants build a real-world portfolio project.",
-    },
-    categoryName: "Technology & Data",
-  },
-  {
-    name: "Lean Six Sigma Green Belt Certification",
-    description:
-      "<p>Achieve your <strong>Green Belt certification</strong> by mastering the <strong>DMAIC methodology</strong> (Define, Measure, Analyze, Improve, Control) to lead process improvement projects, reduce waste, and increase quality in any organization. Become a certified process expert.</p>",
-    fee: 1800.0,
-    topics:
-      "<h3>Phase 1: Define and Measure</h3><ul><li>Selecting High-Impact Projects</li><li>Mapping the Process (SIPOC)</li><li>Data Collection Planning and Measurement System Analysis (MSA)</li></ul><h3>Phase 2: Analyze and Improve</h3><ul><li>Root Cause Analysis Tools (Hypothesis Testing)</li><li>Introduction to Statistical Process Control (SPC)</li><li>Brainstorming and Implementing Solutions</li></ul><h3>Phase 3: Control and Sustain</h3><ul><li>Creating Control Plans to Maintain Gains</li><li>Documenting and Standardizing the New Process</li><li>Project Sign-off and Handover</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Lean Six Sigma Green Belt Certification (Accredited Body).</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Includes examination fee.</p>",
-    jobRoles:
-      "<ul><li>Process Improvement Specialists</li><li>Quality Managers</li><li>Operations Managers</li><li>Engineers and Production Staff</li></ul>",
-    courseCode: "LSSGB",
-    trainers:
-      "<strong>Puan Dr. Zura, Master Black Belt:</strong> Dr. Zura is a certified Lean Six Sigma Master Black Belt with extensive experience in the manufacturing and service industries, having mentored dozens of successful Green Belt projects.",
-    session: 4,
-    duration: 30.0,
-    venue: "Selangor, Glenmarie Industrial Park.",
-    level: "Advanced",
-    notes: {
-      Certification:
-        "Requires completion of the training and a mandatory process improvement project.",
-      Tools: "Use of Minitab/Excel for statistical analysis.",
-    },
-    categoryName: "Operations & Logistics",
-  },
-  {
-    name: "Advanced Emotional Intelligence for Leadership",
-    description:
-      "<p>A critical course for <strong>senior leaders</strong> focusing on deep self-awareness, social management, and leveraging <strong>emotional intelligence (EQ)</strong> to build resilient teams, inspire change, and navigate complex organizational politics. Enhance your executive presence and influence.</p>",
-    fee: 720.0,
-    topics:
-      "<h3>Dimension 1: Self-Awareness and Regulation</h3><ul><li>Identifying Personal Triggers and Biases</li><li>Advanced Stress Management and Resilience</li><li>Authentic Leadership and Personal Values</li></ul><h3>Dimension 2: Social Awareness</h3><ul><li>Reading Group Dynamics and Organizational Culture</li><li>Empathy and Perspective-Taking Skills</li><li>Navigating Difficult Stakeholder Relationships</li></ul><h3>Dimension 3: Relationship Management</h3><ul><li>Inspiring and Influencing Others</li><li>Constructive Conflict Resolution and Coaching</li><li>Building a Culture of Trust and Psychological Safety</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>Emotional Intelligence Leadership Practitioner Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Often bundled with 360-degree assessment tools.</p>",
-    jobRoles:
-      "<ul><li>Senior Managers and Directors</li><li>High-Potential Leaders</li><li>HR and Organisational Development Specialists</li></ul>",
-    courseCode: "LEAD202",
-    trainers:
-      "<strong>Mr. Alex Tan, Executive Coach:</strong> Alex is a certified leadership and emotional intelligence coach. He uses proven psychological frameworks and personalized feedback to drive measurable behavioral change in leaders.",
-    session: 2,
-    duration: 14.0,
-    venue: "Kuala Lumpur, Mandarin Oriental Hotel (Executive Training Suite).",
-    level: "Advanced",
-    notes: {
-      Assessment:
-        "Includes pre-course EQ assessment (e.g., Mayer-Salovey model) and personalized debrief.",
-      "Follow-up": "Two virtual group coaching sessions post-course.",
-    },
-    categoryName: "Management & Leadership",
-  },
-  {
-    name: "Essential ISO 9001:2015 Quality Management System",
-    description:
-      "<p>Learn the principles and requirements of the <strong>ISO 9001:2015 standard</strong>. This course provides practical knowledge on implementing, maintaining, and auditing a <strong>Quality Management System (QMS)</strong> in any industry. Essential for organizational standardization and global compliance.</p>",
-    fee: 780.0,
-    topics:
-      "<h3>Section A: Understanding ISO 9001</h3><ul><li>The Seven Quality Management Principles</li><li>Structure and Context of ISO 9001:2015 (Annex SL)</li><li>Understanding Customer Requirements and Expectations</li></ul><h3>Section B: Implementation and Documentation</h3><ul><li>Risk-Based Thinking and Opportunity Assessment</li><li>Process Approach and Performance Evaluation</li><li>Required Documented Information</li></ul><h3>Section C: Auditing and Improvement</h3><ul><li>Conducting Internal Audits (Principles and Methods)</li><li>Nonconformity Management and Corrective Actions</li><li>Continuous Improvement (KAIZEN)</li></ul>",
-    courseInfo:
-      "<h4>Certificate</h4><p>ISO 9001:2015 QMS Foundation Certificate.</p><h4>Funding and Grant</h4><p>HRD Corp Claimable Course. Crucial for compliance and international trade.</p>",
-    jobRoles:
-      "<ul><li>Quality Managers and Engineers</li><li>Internal Auditors</li><li>Process Owners</li><li>Management Representatives</li></ul>",
-    courseCode: "ISO901",
-    trainers:
-      "<strong>Ms. Janet Lee, Lead Auditor:</strong> Janet is a certified ISO 9001 Lead Auditor and consultant with experience in certifying organizations across manufacturing, oil & gas, and service sectors.",
-    session: 2,
-    duration: 15.0,
-    venue: "Virtual/Online Only (Interactive Case Studies).",
+    duration: 20,
+    venue:
+      "Penang: Tech Innovation Lab, Suite 8, 20 Jalan Dev, 11500 Penang, Malaysia.",
     level: "Intermediate",
     notes: {
-      Focus:
-        "Practical application of the standard clauses, not just theoretical understanding.",
-      Templates: "QMS documentation templates provided.",
+      Disclaimer: "Docker required for labs; cloud credits provided.",
+      "Post‑Course Support": "Two weeks of code‑review assistance.",
     },
-    categoryName: "Operations & Logistics",
+    categoryName: "Full Stack Development",
+  },
+
+  {
+    name: "Mobile App Development with Flutter",
+    description:
+      "<p>Cross‑platform mobile development using Google's Flutter SDK. Participants will create a fully functional iOS/Android app with state management, backend integration, and publishing basics.</p>",
+    fee: 1249.0,
+    topics:
+      "<h3>Topic 1 Flutter Foundations</h3><ul><li>Widgets, layout, navigation</li></ul><h3>Topic 2 State Management & APIs</h3><ul><li>Provider, Bloc, REST integration</li></ul><h3>Topic 3 Deployment</h3><ul><li>Testing, signing, publishing to App Store & Play Store</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Mobile Developers</li><li>Product Engineers</li><li>UX Engineers</li></ul>",
+    courseCode: "MOB101",
+    trainers:
+      "<strong>Arif Zulkifli:</strong> Mobile Engineer, 9 years building Flutter apps for retail and health tech.",
+    session: 3,
+    duration: 15,
+    venue:
+      "Kuala Lumpur: Mobile Labs, Suite 4, 6th Floor, 2‑Jalan Mobile, 50420 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Students need a macOS device for iOS build labs.",
+      "Post‑Course Support": "One month of build‑pipeline assistance.",
+    },
+    categoryName: "Mobile Apps",
+  },
+
+  {
+    name: "DevOps Foundations (CI/CD, IaC, Monitoring)",
+    description:
+      "<p>Introduce the DevOps culture, continuous integration / delivery pipelines, infrastructure as code (Terraform), and monitoring (Prometheus, Grafana).</p>",
+    fee: 1099.0,
+    topics:
+      "<h3>Topic 1 CI/CD Pipelines</h3><ul><li>GitHub Actions, Jenkins basics</li></ul><h3>Topic 2 Infrastructure as Code</h3><ul><li>Terraform, cloud provisioning</li></ul><h3>Topic 3 Monitoring & Logging</h3><ul><li>Prometheus, Grafana, ELK stack</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>DevOps Engineers</li><li>Site Reliability Engineers</li><li>System Administrators</li></ul>",
+    courseCode: "DEVOPS101",
+    trainers:
+      "<strong>Surya Prakash:</strong> DevOps lead, 11 years automating pipelines for enterprise SaaS.",
+    session: 3,
+    duration: 14,
+    venue:
+      "Penang: Ops Lab, Suite 9, 3rd Floor, 45 Jalan Ops, 11500 Penang, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer: "Free tier cloud accounts (AWS, GCP) are used for labs.",
+      "Post‑Course Support": "Two‑hour pipeline audit after course.",
+    },
+    categoryName: "DevOps",
+  },
+
+  {
+    name: "RPA, API & Automation Essentials",
+    description:
+      "<p>Learn robotic process automation with UiPath, API design with Swagger, and workflow automation using Power Automate.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 RPA with UiPath</h3><ul><li>Recorder, selectors, exception handling</li></ul><h3>Topic 2 API Design & Testing</h3><ul><li>OpenAPI spec, Postman, OAuth2</li></ul><h3>Topic 3 End‑to‑End Automation</h3><ul><li>Power Automate flows, integration with Teams</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Automation Analysts</li><li>Business Process Engineers</li><li>IT Integration Specialists</li></ul>",
+    courseCode: "AUTOM101",
+    trainers:
+      "<strong>Jenna Tan:</strong> Senior Automation Consultant, 8 years delivering RPA projects in banking.",
+    session: 2,
+    duration: 10,
+    venue:
+      "Kuala Lumpur: Automation Hub, Suite 12, 9th Floor, 7‑Jalan Automation, 50410 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "UiPath Community Edition used; no licence cost.",
+      "Post‑Course Support": "One month of Slack‑based troubleshooting.",
+    },
+    categoryName: "RPA, API & Automation",
+  },
+
+  {
+    name: "Networking Fundamentals (CCNA‑Level)",
+    description:
+      "<p>Cover networking concepts, IP addressing, routing & switching, VLANs, and basic security. Prepares for Cisco CCNA certification.</p>",
+    fee: 899.0,
+    topics:
+      "<h3>Topic 1 Network Basics</h3><ul><li>OSI/TCP‑IP models, Ethernet, cabling</li></ul><h3>Topic 2 Switching & Routing</h3><ul><li>VLANs, inter‑VLAN routing, static & OSPF routing</li></ul><h3>Topic 3 Network Services & Security</h3><ul><li>DHCP, DNS, ACLs, VPN basics</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses (eligible for CCNA exam voucher).</p>",
+    jobRoles:
+      "<ul><li>Network Engineers</li><li>IT Support Technicians</li><li>System Administrators</li></ul>",
+    courseCode: "NET101",
+    trainers:
+      "<strong>Mohd Zulkifli:</strong> Cisco Certified Instructor, 15 years designing enterprise networks.",
+    session: 3,
+    duration: 12,
+    venue:
+      "Penang: Network Lab, Suite 5, 2nd Floor, 33 Jalan Net, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Packet Tracer labs provided; optional physical hardware labs available.",
+      "Post‑Course Support": "Two‑hour lab Q&A after the course.",
+    },
+    categoryName: "Networking",
+  },
+
+  {
+    name: "Database Design & SQL (MySQL & PostgreSQL)",
+    description:
+      "<p>Learn relational database fundamentals, ER modelling, query optimisation, and transaction management using MySQL and PostgreSQL.</p>",
+    fee: 849.0,
+    topics:
+      "<h3>Topic 1 Relational Theory & Modelling</h3><ul><li>Normalization, ER diagrams</li></ul><h3>Topic 2 SQL Querying</h3><ul><li>SELECT, JOINS, sub‑queries, window functions</li></ul><h3>Topic 3 Performance & Administration</h3><ul><li>Indexes, EXPLAIN, backup & recovery</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Database Administrators</li><li>Backend Developers</li><li>Data Analysts</li></ul>",
+    courseCode: "DB101",
+    trainers:
+      "<strong>Lim Siew Fong:</strong> DBA with 12 years managing high‑availability clusters.",
+    session: 2,
+    duration: 9,
+    venue:
+      "Kuala Lumpur: Data Lab, Suite 6, 4th Floor, 10‑Jalan Data, 50430 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Labs run on Dockerised MySQL & PostgreSQL containers.",
+      "Post‑Course Support": "One month of query‑optimisation assistance.",
+    },
+    categoryName: "Databases",
+  },
+
+  {
+    name: "Operating Systems Concepts (Linux & Windows)",
+    description:
+      "<p>Fundamentals of OS architecture, process management, memory, file systems, and security for both Linux and Windows environments.</p>",
+    fee: 799.0,
+    topics:
+      "<h3>Topic 1 OS Architecture</h3><ul><li>Kernel vs. user space, system calls</li></ul><h3>Topic 2 Process & Memory Management</h3><ul><li>Scheduling, virtualization, paging</li></ul><h3>Topic 3 Security & Administration</h3><ul><li>Permissions, services, monitoring tools</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>System Administrators</li><li>DevOps Engineers</li><li>Support Engineers</li></ul>",
+    courseCode: "OS101",
+    trainers:
+      "<strong>Azri Khalid:</strong> Linux Systems Engineer, 10 years in enterprise server management.",
+    session: 2,
+    duration: 8,
+    venue:
+      "Penang: Systems Lab, Suite 11, 1st Floor, 22 Jalan Sys, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Virtual machines provided for both Linux and Windows labs.",
+      "Post‑Course Support": "Two‑hour troubleshooting session post‑course.",
+    },
+    categoryName: "Operating Systems",
+  },
+
+  {
+    name: "Graphics Design Fundamentals (Adobe Suite)",
+    description:
+      "<p>Introductory course covering Photoshop, Illustrator, and InDesign for creating professional visual assets.</p>",
+    fee: 899.0,
+    topics:
+      "<h3>Topic 1 Photoshop Basics</h3><ul><li>Layers, masks, retouching</li></ul><h3>Topic 2 Illustrator Essentials</h3><ul><li>Vector creation, typography, logos</li></ul><h3>Topic 3 InDesign for Layouts</h3><ul><li>Brochures, magazines, digital PDFs</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Graphic Designers</li><li>Marketing Creatives</li><li>Content Producers</li></ul>",
+    courseCode: "GD101",
+    trainers:
+      "<strong>Nadia Rahman:</strong> Senior Graphic Designer, 12 years in branding & advertising.",
+    session: 3,
+    duration: 12,
+    venue:
+      "Kuala Lumpur: Creative Studio, Suite 2, 3rd Floor, 8‑Jalan Creative, 50470 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Design software licences provided for the duration of the training.",
+      "Post‑Course Support": "One month of portfolio review.",
+    },
+    categoryName: "Graphics Design",
+  },
+
+  {
+    name: "Technical Drawing & CAD (AutoCAD)",
+    description:
+      "<p>Fundamentals of technical drawing, orthographic projection, and 2‑D/3‑D modelling using AutoCAD.</p>",
+    fee: 799.0,
+    topics:
+      "<h3>Topic 1 Drawing Basics</h3><ul><li>Lines, circles, dimensions, layers</li></ul><h3>Topic 2 2‑D Drafting</h3><ul><li>Layouts, blocks, annotation</li></ul><h3>Topic 3 Intro to 3‑D Modelling</h3><ul><li>Extrusion, lofts, rendering basics</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Draughtsmen</li><li>Mechanical Designers</li><li>Architecture Assistants</li></ul>",
+    courseCode: "CAD101",
+    trainers:
+      "<strong>Ahmad Zain:</strong> Certified AutoCAD Instructor, 14 years in mechanical design.",
+    session: 2,
+    duration: 9,
+    venue:
+      "Penang: Design Lab, Suite 7, 2nd Floor, 40 Jalan Design, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "AutoCAD licences supplied for labs.",
+      "Post‑Course Support": "Two‑hour design critique session.",
+    },
+    categoryName: "Technical Drawing",
+  },
+
+  {
+    name: "3D Printing & Additive Manufacturing",
+    description:
+      "<p>Overview of additive manufacturing processes, slicer software, material selection, and hands‑on operation of FDM and SLA printers.</p>",
+    fee: 1199.0,
+    topics:
+      "<h3>Topic 1 AM Technologies</h3><ul><li>FDM, SLA, SLS basics</li></ul><h3>Topic 2 Design for 3D Printing</h3><ul><li>STL optimisation, support generation</li></ul><h3>Topic 3 Lab & Post‑Processing</h3><ul><li>Printer setup, calibration, finishing</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Product Designers</li><li>Prototyping Engineers</li><li>Manufacturing Technicians</li></ul>",
+    courseCode: "3DP101",
+    trainers:
+      "<strong>Kumar Patel:</strong> Additive Manufacturing Specialist, 11 years in rapid prototyping.",
+    session: 2,
+    duration: 12,
+    venue:
+      "Kuala Lumpur: Makerspace, Suite 3, 1st Floor, 12‑Jalan Maker, 50480 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer:
+        "Materials (PLA, resin) provided for labs; additional material purchases optional.",
+      "Post‑Course Support": "One month of print‑failure troubleshooting.",
+    },
+    categoryName: "3D Printing",
+  },
+
+  {
+    name: "Video Editing with Adobe Premiere Pro",
+    description:
+      "<p>Learn video editing workflow – import, timeline editing, colour correction, audio mixing, and export for web and broadcast.</p>",
+    fee: 899.0,
+    topics:
+      "<h3>Topic 1 Premiere Pro Basics</h3><ul><li>Project setup, media import, timeline editing</li></ul><h3>Topic 2 Advanced Editing</h3><ul><li>Multi‑camera, keyframing, effects</li></ul><h3>Topic 3 Colour & Audio</h3><ul><li>Lumetri colour, audio ducking, final export settings</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Video Editors</li><li>Content Creators</li><li>Marketing Producers</li></ul>",
+    courseCode: "VID101",
+    trainers:
+      "<strong>Leong Hwee Yi:</strong> Senior Video Producer, 13 years producing corporate videos and ads.",
+    session: 3,
+    duration: 12,
+    venue:
+      "Penang: Media Lab, Suite 13, 2nd Floor, 28 Jalan Media, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Adobe Creative Cloud licences provided for labs.",
+      "Post‑Course Support":
+        "Feedback on a 2‑minute sample edit (up to 2 revisions).",
+    },
+    categoryName: "Video Editing",
+  },
+
+  {
+    name: "Photography Essentials (DSLR & Mirrorless)",
+    description:
+      "<p>Fundamentals of exposure, composition, lighting, and post‑processing using Lightroom and Photoshop.</p>",
+    fee: 799.0,
+    topics:
+      "<h3>Topic 1 Camera Basics</h3><ul><li>Aperture, shutter speed, ISO, white balance</li></ul><h3>Topic 2 Creative Techniques</h3><ul><li>Composition rules, lighting, portrait vs. landscape</li></ul><h3>Topic 3 Post‑Processing</h3><ul><li>RAW workflow, Lightroom editing, Photoshop retouch</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Photographers</li><li>Content Creators</li><li>Social Media Managers</li></ul>",
+    courseCode: "PHOTO101",
+    trainers:
+      "<strong>Marina Tan:</strong> Professional photographer, 10 years specialising in commercial and event photography.",
+    session: 2,
+    duration: 8,
+    venue:
+      "Kuala Lumpur: Photo Studio, Suite 5, Ground Floor, 15‑Jalan Photo, 50490 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer:
+        "Participants should bring their own camera; loaners available on request.",
+      "Post‑Course Support": "One month of photo‑review feedback.",
+    },
+    categoryName: "Photography",
+  },
+
+  {
+    name: "UX/UI Design Fundamentals (Figma & Adobe XD)",
+    description:
+      "<p>Principles of user‑centred design, wireframing, prototyping, and usability testing using modern design tools.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 UX Foundations</h3><ul><li>User research, personas, journey maps</li></ul><h3>Topic 2 UI Design & Prototyping</h3><ul><li>Figma, component libraries, interactive prototyping</li></ul><h3>Topic 3 Usability Testing</h3><ul><li>Heuristic evaluation, remote testing tools</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>UX Designers</li><li>Product Designers</li><li>UI Engineers</li></ul>",
+    courseCode: "UX101",
+    trainers:
+      "<strong>Rohani Kaur:</strong> Lead UX Designer, 9 years building SaaS product experiences.",
+    session: 3,
+    duration: 12,
+    venue:
+      "Penang: Design Hub, Suite 14, 3rd Floor, 11 Jalan Design, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Figma and Adobe XD licences provided for the class.",
+      "Post‑Course Support": "Portfolio critique (up to 3 projects).",
+    },
+    categoryName: "UX/UI Design",
+  },
+
+  {
+    name: "Game Development & Animation with Unity",
+    description:
+      "<p>Build 2‑D/3‑D games, work with physics, animation, and UI in Unity. Includes a capstone mini‑game project.</p>",
+    fee: 1399.0,
+    topics:
+      "<h3>Topic 1 Unity Basics</h3><ul><li>Scene setup, GameObjects, scripting (C#)</li></ul><h3>Topic 2 2‑D/3‑D Mechanics</h3><ul><li>Physics, animation state machines, UI Canvas</li></ul><h3>Topic 3 Publishing</h3><ul><li>Build for Android/iOS, performance profiling</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Game Developers</li><li>Interactive Media Artists</li><li>VR/AR Prototypers</li></ul>",
+    courseCode: "GAME101",
+    trainers:
+      "<strong>Steven Lee:</strong> Senior Unity Developer, 12 years creating mobile games and simulations.",
+    session: 4,
+    duration: 18,
+    venue:
+      "Kuala Lumpur: Game Lab, Suite 9, 5th Floor, 3‑Jalan Game, 50450 Kuala Lumpur, Malaysia.",
+    level: "Intermediate",
+    notes: {
+      Disclaimer: "Unity Pro licence supplied for labs.",
+      "Post‑Course Support": "Two‑hour post‑mortem of the mini‑game.",
+    },
+    categoryName: "Gaming & Animation",
+  },
+
+  {
+    name: "Immersive Technologies (AR/VR with Unreal Engine)",
+    description:
+      "<p>Introduction to immersive experiences using Unreal Engine, covering scene creation, interaction design, and deployment to headsets.</p>",
+    fee: 1499.0,
+    topics:
+      "<h3>Topic 1 Unreal Engine Foundations</h3><ul><li>Blueprint visual scripting, lighting, materials</li></ul><h3>Topic 2 Interaction & XR</h3><ul><li>VR locomotion, AR object placement, hand tracking</li></ul><h3>Topic 3 Publishing</h3><ul><li>Build for Oculus Quest, WebXR, performance optimisation</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>XR Developers</li><li>3‑D Artists</li><li>Experience Designers</li></ul>",
+    courseCode: "XR101",
+    trainers:
+      "<strong>Dr. Mei Lin:</strong> XR Research Lead, 10 years building AR/VR applications for education and training.",
+    session: 3,
+    duration: 15,
+    venue:
+      "Penang: Immersive Lab, Suite 10, 4th Floor, 6 Jalan Immersive, 11500 Penang, Malaysia.",
+    level: "Advanced",
+    notes: {
+      Disclaimer: "Oculus Quest 2 headsets provided for hands‑on labs.",
+      "Post‑Course Support": "One month of device‑setup assistance.",
+    },
+    categoryName: "Immersive Technologies",
+  },
+
+  {
+    name: "Instructional Design & eLearning Development",
+    description:
+      "<p>Design effective learning experiences using ADDIE, storyboard creation, and authoring tools such as Articulate Rise and Captivate.</p>",
+    fee: 999.0,
+    topics:
+      "<h3>Topic 1 Foundations of Instructional Design</h3><ul><li>Learning theories, needs analysis, ADDIE</li></ul><h3>Topic 2 Storyboarding & Media</h3><ul><li>Scriptwriting, graphics, audio, video basics</li></ul><h3>Topic 3 Authoring Tools & LMS Integration</h3><ul><li>Articulate Rise, Adobe Captivate, SCORM, xAPI</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Instructional Designers</li><li>L&D Specialists</li><li>Content Developers</li></ul>",
+    courseCode: "IDL101",
+    trainers:
+      "<strong>Siti Aisha:</strong> Senior Learning Designer, 11 years creating corporate e‑learning programmes.",
+    session: 2,
+    duration: 10,
+    venue:
+      "Kuala Lumpur: Learning Studio, Suite 8, 2nd Floor, 4‑Jalan Learning, 50420 Kuala Lumpur, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Articulate 360 and Captivate licences supplied.",
+      "Post‑Course Support":
+        "Feedback on one e‑learning module (up to 2 revisions).",
+    },
+    categoryName: "Instructional Design",
+  },
+
+  {
+    name: "Infographics Design with Canva & Illustrator",
+    description:
+      "<p>Learn data‑visualisation principles and create compelling infographics using Canva templates and Adobe Illustrator.</p>",
+    fee: 699.0,
+    topics:
+      "<h3>Topic 1 Data Visualisation Basics</h3><ul><li>Chart types, hierarchy, colour theory</li></ul><h3>Topic 2 Canva Workflow</h3><ul><li>Template adaptation, collaborative editing</li></ul><h3>Topic 3 Illustrator for Custom Graphics</h3><ul><li>Icon design, vector charts, export for web/social</li></ul>",
+    courseInfo:
+      "<h4>Certificate</h4><p>Certificate of Completion from Tertiary Courses.</p>",
+    jobRoles:
+      "<ul><li>Marketing Creatives</li><li>Content Strategists</li><li>Social Media Managers</li></ul>",
+    courseCode: "INFO101",
+    trainers:
+      "<strong>Rashid Mahmud:</strong> Visual Designer, 9 years in data‑driven storytelling.",
+    session: 2,
+    duration: 6,
+    venue:
+      "Penang: Visual Lab, Suite 4, Ground Floor, 9 Jalan Graphics, 11500 Penang, Malaysia.",
+    level: "Beginner",
+    notes: {
+      Disclaimer: "Canva Pro and Illustrator licences provided.",
+      "Post‑Course Support": "One infographic review session.",
+    },
+    categoryName: "Infographics",
   },
 ];
+async function createCategory(
+  category: CategorySeed,
+  parentId: string | null = null
+) {
+  const created = await prisma.courseCategory.upsert({
+    where: { name: category.name },
+    update: {
+      description: category.name,
+      //isHeader: category.isHeader || false,
+      parentId: parentId,
+    },
+    create: {
+      name: category.name,
+      description: category.name,
+      //isHeader: category.isHeader || false,
+      parentId: parentId,
+    },
+  });
 
-const tags = ["SEO", "SOCIAL MEDIA", "GOOGLE ADS", "Analytics", "Education"];
+  if (category.children) {
+    for (const child of category.children) {
+      await createCategory(child, created.id);
+    }
+  }
+}
 
 export async function main() {
+  console.log("Seeding categories...");
+  for (const category of categories) {
+    await createCategory(category);
+  }
   for (const course of courses) {
-    let categoryExists = await prisma.courseCategory.findUnique({
+    await createCategory(
+      {
+        name: course.categoryName,
+      },
+      null
+    );
+    const category = await prisma.courseCategory.findUnique({
       where: {
         name: course.categoryName,
       },
     });
-    if (!categoryExists) {
-      categoryExists = await prisma.courseCategory.create({
-        data: { name: course.categoryName, description: course.categoryName },
-      });
-    }
-    const courseExists = await prisma.course.findUnique({
-      where: {
-        name: course.name,
-      },
-    });
-    if (courseExists) continue;
+    if (!category) throw new Error();
+
     await prisma.course.create({
       data: {
         name: course.name,
@@ -575,44 +1206,11 @@ export async function main() {
         venue: course.venue,
         level: course.level,
         notes: course.notes,
-        categoryId: categoryExists.id,
+        categoryId: category.id,
       },
     });
   }
-
-  for (const tag of tags) {
-    let exists = await prisma.tags.findUnique({
-      where: {
-        name: tag,
-      },
-    });
-    if (exists) continue;
-    exists = await prisma.tags.create({
-      data: {
-        name: tag,
-      },
-    });
-    for (const course of courses) {
-      const category = await prisma.courseCategory.findUnique({
-        where: {
-          name: course.categoryName,
-        },
-      });
-      if (!category) continue;
-      const tagExists = await prisma.categoryTags.findUnique({
-        where: {
-          tagId_categoryId: {
-            tagId: exists.id,
-            categoryId: category.id,
-          },
-        },
-      });
-      if (tagExists) continue;
-      await prisma.categoryTags.create({
-        data: { tagId: exists.id, categoryId: category.id },
-      });
-    }
-  }
+  console.log("Seeding completed.");
 }
 
 main()
