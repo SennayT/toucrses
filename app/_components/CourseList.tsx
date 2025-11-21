@@ -1,25 +1,31 @@
-import prisma from "@/lib/prisma";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CourseCard } from "./CourseCard";
 
-export async function CourseList() {
-  const list = await prisma.course.findMany({
-    take: 10,
-  });
-  return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Popular Courses */}
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-8">
-          Popular Courses
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {list.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
+export const CourseSection = ({ title, courses, type = "standard" }: { title: string, courses: any[], type?: string | undefined }) => (
+  <div className="bg-white py-8 border-t border-gray-100">
+    <div className="container mx-auto px-4">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex-1 text-center">
+          <h2 className="text-2xl text-gray-700 font-medium tracking-tight inline-block relative">
+            {title}
+          </h2>
         </div>
-
-        {/* Certification Courses */}
+        <div className="flex gap-1">
+          <button className="w-8 h-8 flex items-center justify-center border border-gray-200 hover:bg-gray-100 text-gray-500"><ChevronLeft size={14} /></button>
+          <button className="w-8 h-8 flex items-center justify-center border border-gray-200 hover:bg-gray-100 text-gray-500"><ChevronRight size={14} /></button>
+        </div>
       </div>
-    </section>
-  );
-}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        {courses.map(course => (
+          <CourseCard key={course.id} course={course} type={type} />
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-8 gap-2">
+        <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+        <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+      </div>
+    </div>
+  </div>
+);

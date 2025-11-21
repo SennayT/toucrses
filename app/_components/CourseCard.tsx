@@ -1,58 +1,47 @@
-import prisma from "@/lib/prisma";
+import { Star } from "lucide-react";
 
-import { StarRating } from "./StarRating";
-import { Prisma } from "../generated/prisma/client";
-import { SanitizedText } from "./SanitizedText";
-import Link from "next/link";
-
-interface Course {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string;
-  rating: number;
-  reviewCount: number;
-  price: string;
-  isHrdCorp: boolean;
-}
-export function CourseCard({
-  course,
-}: {
-  course: Prisma.CourseGetPayload<{ include: null }>;
-}) {
-  return (
-    <div className="flex flex-col bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-      <div className="flex flex-col flex-1 p-6">
-        <div className="flex-1">
-          <h3 className="text-xl font-semibold text-gray-900 hover:text-blue-600">
-            {course.courseCode}
-          </h3>
-
-          <Link className="block mt-2" href={`course-detail/${course.id}`}>
-            <h3 className="text-xl font-semibold text-gray-900 hover:text-blue-600">
-              {course.name}
-            </h3>
-          </Link>
-
-          <div className="mt-3 text-base text-gray-500">
-            <SanitizedText text={course.description} />
+export const CourseCard = ({ course, type = "standard" }: { course: any, type: string | undefined }) => {
+  if (type === "microsoft") {
+    return (
+      <div className="bg-white p-4 flex flex-col items-center text-center hover:shadow-lg transition-shadow">
+        <img src={course.image} alt={course.title} className="w-32 h-32 object-contain mb-4" />
+        <h4 className="text-sm font-bold text-gray-700 leading-tight mb-2 line-clamp-3 min-h-[3rem]">{course.title}</h4>
+        <div className="mt-auto">
+          {/* Badge Mock */}
+          <div className="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm inline-block mb-2">
+            ASSOCIATE
           </div>
-        </div>
-        <div className="mt-6">
-          <StarRating rating={5} reviewCount={5} />
-          <div className="mt-4 flex justify-between items-center">
-            <span className="text-2xl font-bold text-gray-900">
-              {course.fee}
-            </span>
-            <Link
-              href={`course-detail/${course.id}`}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
-            >
-              See Details
-            </Link>
+          <div className="flex justify-center gap-1 text-blue-500">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={12} fill={i < 2 ? "currentColor" : "none"} className={i < 2 ? "text-blue-500" : "text-gray-300"} />
+            ))}
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-4 flex flex-col items-center text-center group">
+      <div className="mb-4 relative w-24 h-24 flex items-center justify-center">
+        <img src={course.image} alt={course.title} className="max-w-full max-h-full object-contain" />
+      </div>
+      <h4 className="text-base font-semibold text-gray-800 mb-2 leading-snug min-h-[3rem] line-clamp-2">
+        {course.title}
+      </h4>
+
+      <div className="flex items-center gap-1 mb-2">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} size={12} className={i < Math.floor(course.rating) ? "text-black fill-black" : "text-gray-300"} />
+        ))}
+        <span className="text-xs text-gray-400 ml-1">{course.reviews} REVIEW(S)</span>
+      </div>
+
+      <div className="text-blue-600 font-medium mb-3">{course.price}</div>
+
+      <button className="bg-blue-900 text-white text-xs font-medium py-2 px-6 hover:bg-blue-800 transition-colors">
+        See Details
+      </button>
     </div>
   );
-}
+};

@@ -1,46 +1,77 @@
-export function HeroSection() {
-  return (
-    <div className="relative bg-gray-800">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          className="w-full h-full object-cover"
-          src="https://placehold.co/1600x600/334155/E2E8F0?text=Learn+In-Demand+Skills"
-          alt="Man holding a certificate"
-        />
-        <div className="absolute inset-0 bg-black/60 mix-blend-multiply"></div>
+import prisma from "@/lib/prisma";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CategoryMenu } from "./CategoryMenu";
+// const CATEGORIES = [
+//   "Infocomm Technology",
+//   "Media & Design",
+//   "Robotics & IoT",
+//   "Digital Marketing",
+//   "Business & Soft Skills",
+//   "Financial Services",
+//   "Logistics & Supply Chain",
+//   "Semiconductor & Electronics",
+//   "Healthcare & WSH",
+//   "Sustainability & ESG"
+// ];
+export const HeroSection = async () => {
+  const categories = await prisma.courseCategory.findMany({
+    where: {
+      parentId: null
+    }
+  })
+  return <div className="container mx-auto px-4 py-6">
+    <div className="flex flex-col md:flex-row gap-6">
+      {/* Sidebar Categories */}
+      <div className="w-full md:w-64 flex-shrink-0">
+        <h3 className="text-lg font-bold text-gray-800 mb-3 px-1">Categories</h3>
+        <CategoryMenu categories={categories} />
+
       </div>
 
-      {/* Content */}
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-48 text-center">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-          Certify Your Skills. Advance Your Career.
-        </h1>
-        <p className="mt-6 max-w-3xl mx-auto text-xl text-gray-200">
-          Explore thousands of hands-on courses from top industry experts. HRD
-          Corp claimable.
-        </p>
-        <div className="mt-10 max-w-lg mx-auto">
-          <form className="sm:flex">
-            <label htmlFor="search-course" className="sr-only">
-              Search for a course
-            </label>
-            <input
-              type="text"
-              name="search-course"
-              id="search-course"
-              className="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-500 border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              placeholder="What do you want to learn?"
-            />
-            <button
-              type="submit"
-              className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto px-6 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              Search
-            </button>
-          </form>
+      {/* Hero Carousel */}
+      <div className="flex-grow relative group overflow-hidden rounded shadow-md bg-gray-100 h-[300px] md:h-[450px]">
+        {/* Mock Hero Image Content */}
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+          alt="Office Interior"
+          className="w-full h-full object-cover"
+        />
+
+        {/* Overlays (Badge + Logo Mock) */}
+        <div className="absolute top-10 left-10 bg-white p-4 rounded-full shadow-lg w-48 h-48 flex items-center justify-center opacity-90 hidden sm:flex">
+          <div className="text-center">
+            <div className="border-4 border-orange-500 rounded-full p-2 w-36 h-36 flex flex-col items-center justify-center">
+              <span className="text-orange-500 font-bold text-xs">REGISTERED</span>
+              <span className="text-blue-900 font-black text-xl leading-tight">HRD<br /><span className="text-sm">CORP</span></span>
+              <span className="bg-blue-900 text-white text-[10px] px-2 py-0.5 mt-1 rounded-sm">TRAINING PROVIDER</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute top-10 right-10 bg-white/90 p-6 shadow-sm hidden sm:block">
+          <div className="text-2xl font-bold text-blue-900 flex items-center gap-2">
+            <div className="bg-blue-900 text-white w-8 h-8 flex items-center justify-center rounded font-bold">T</div>
+            Tertiary<br />Infotech
+          </div>
+          <p className="text-[10px] text-gray-500 mt-2">Corporate Training . Workplace Learning Solution . Curriculum Development</p>
+        </div>
+
+        {/* Carousel Controls */}
+        <button className="absolute left-0 top-1/2 -translate-y-1/2 bg-blue-900/80 text-white p-3 hover:bg-blue-800 transition-colors">
+          <ChevronLeft size={20} />
+        </button>
+        <button className="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-900/80 text-white p-3 hover:bg-blue-800 transition-colors">
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Dots */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+          <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+          <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+          <div className="w-3 h-3 rounded-full bg-gray-300"></div>
         </div>
       </div>
     </div>
-  );
+  </div>
 }
