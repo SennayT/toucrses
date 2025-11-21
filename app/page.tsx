@@ -80,7 +80,7 @@ export default function App() {
       <NavBar />
       <HeroSection />
       <CourseSection />
-      <CourseSection />
+
       <Footer />
     </div>
   );
