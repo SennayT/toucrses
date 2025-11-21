@@ -35,7 +35,7 @@ export function CategoryMenu({ categories }: Props) {
                 </div>
             ))}
         </div>
-        <List
+        {/* <List
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             component="nav"
             aria-labelledby="nested-list-subheader"
@@ -70,6 +70,6 @@ export function CategoryMenu({ categories }: Props) {
                     </ListItemButton>
                 </List>
             </Collapse>
-        </List>
+        </List> */}
     </div>
 }
