@@ -9,11 +9,35 @@ export const NavBar = async () => {
       isHeader: true,
     },
     include: {
+      categoryTags: {
+        include: {
+          tag: true,
+        },
+      },
       children: {
         include: {
+          categoryTags: {
+            include: {
+              tag: true,
+            },
+          },
           children: {
             include: {
-              children: true,
+              categoryTags: {
+                include: {
+                  tag: true,
+                },
+              },
+              children: {
+                include: {
+                  categoryTags: {
+                    include: {
+                      tag: true,
+                    },
+                  },
+                  children: true,
+                },
+              },
             },
           },
         },
