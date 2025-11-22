@@ -140,7 +140,7 @@ function SubMenuItem({
           href={`/category/${category.id}`}
           className="text-gray-600 hover:text-blue-700 text-sm font-medium flex items-center"
         >
-          {category.name}s
+          {category.name}
           <Badge tags={category.categoryTags} />
         </Link>
       </div>
