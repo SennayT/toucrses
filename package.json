@@ -43,7 +43,8 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.66.0",
     "react-mui-sidebar": "^1.6.10",
-    "react-syntax-highlighter": "^16.1.0"
+    "react-syntax-highlighter": "^16.1.0",
+    "use-debounce": "^10.0.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

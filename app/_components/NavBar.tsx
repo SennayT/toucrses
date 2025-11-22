@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Home, ChevronDown } from "lucide-react";
 import { NavBarMenu } from "./NavBarMenu";
+import Link from "next/link";
 
 export const NavBar = async () => {
   const categories = await prisma.courseCategory.findMany({
@@ -54,7 +55,9 @@ export const NavBar = async () => {
       <div className="container mx-auto px-4">
         <ul className="flex items-center text-[11px] font-bold text-gray-700 tracking-wide">
           <li className="py-3 pr-4 cursor-pointer hover:text-blue-700">
-            <Home size={16} />
+            <Link href="/">
+              <Home size={16} />
+            </Link>
           </li>
           <NavBarMenu categories={categories} />
         </ul>
